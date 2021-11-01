@@ -2,11 +2,8 @@
 
 class Request extends Singleton
 {
-    protected $__data = [];
     protected $__protectedProperties = [
-        '__data',
-        '__protectedProperties',
-        'controller',
+        '__protectedProperties'
     ];
     public function __construct()
     {
@@ -18,12 +15,6 @@ class Request extends Singleton
                 unset($data[$key]);
             }
         }
-
-        $controllers = Controller::getAvailableControllers();
-        if (array_key_exists('s', $data) && array_key_exists($data['s'], $controllers)) {
-            $this->controller = $data['s'];
-        } else {
-            $this->controller = array_keys($controllers)[0];
-        }
+        $this->controller = Controller::_checkAvailableController($this->controller ?? null);
     }
 }

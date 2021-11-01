@@ -1,54 +1,34 @@
 <?php
 
-
-
 abstract class Controller
 {
+    public static $defaultController = 'board';
     public static $controllers = [
-        'studentClasses' => [
-            'permissions'=> ['t']
+        'board'=> [
+            'loggedIn'=> true,
         ],
-        // 'dashboard'=> [
-        //     'permissions'=> ['u']
-        // ],
+        'register'=> [
+            'loggedIn'=> true,
+        ],
         'login'=> [
-            'permissions'=> ['g']
-        ],
-        'studentStats' => [
-            'permissions'=> ['u']
-        ],
-        'subjectInfo' => [
-            'permissions'=> ['t']
-        ],
-        'timetable' => [
-            'permissions'=> ['u']
-        ],
-        'account' => [
-            'permissions'=> ['u']
+            'loggedIn'=> false,
         ],
         'logout' => [
-            'permissions'=> ['u']
+            'loggedIn'=> true
         ],
     ];
 
-    public static function getAvailableControllers($user = null)
-    {
-        if (!$user) {
-            if (User::loggedIn()) {
-                $user = User::loggedIn();
-            }
+    public static function _checkAvailableController($controller) {
+        $controller = $controller ?? static::$defaultController;
+        if (!array_key_exists($controller, static::$controllers)) {
+            $controller = static::$defaultController;
         }
-        $permissionMap = $user ? User::getPermissionMap($user) : ['g'];
-        $controllers = [];
-        foreach (static::$controllers as $controllerName => $controller) {
-            foreach ($controller['permissions'] as $perm) {
-                if (in_array($perm, $permissionMap)) {
-                    $controllers[$controllerName] = $controller;
-                    break;
-                }
-            }
+
+        if (static::$controllers[$controller]['loggedIn'] && !User::loggedIn()) {
+            $controller = 'login';
         }
-        return $controllers;
+
+        return $controller;
     }
 
     abstract public function execute();
@@ -56,19 +36,5 @@ abstract class Controller
     public function __construct()
     {
         $this->execute();
-        if (array_key_exists('do', $_GET)) {
-            $req = $_GET['do'];
-            if (strlen($req) === 0 || $req[0] === '_') {
-                $this->execute();
-            } else {
-                if (method_exists($this, $req)) {
-                    $this->$req();
-                } else {
-                    $this->manage();
-                }
-            }
-        } else {
-            $this->manage();
-        }
     }
 }
