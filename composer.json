@@ -1,0 +1,8 @@
+{
+    "require": {
+        "latte/latte": "^2.10"
+    },
+    "config": {
+        "vendor-dir": "src/vendor"
+    }
+}

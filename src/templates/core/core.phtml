@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pl" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    {if $title}
+    <title>{$title} - Forum</title>
+    {/if}
+</head>
+<body class="controller-{$controller}">
+{if $header}
+{$header|noescape}
+{/if}
+<div id="wrapper">
+    {if $breadcrumb}
+    <div class="breadcrumb">
+        <a href="?">
+            <img class="home" src="src/styles/assets/house.svg">
+        </a>
+        <ul>
+            {foreach $breadcrumb as $page}
+            <li>
+                <a href="{$page['url']}">
+                    {$page['name']}
+                </a>
+            </li>
+            {/foreach}
+        </ul>
+    </div>
+    {/if}
+    {$output|noescape}
+</div>
+{if $footer}
+{$footer|noescape}
+{/if}
+{foreach $jsFiles as $jsFile}
+<script src="{$jsFile}" charset="utf-8"></script>
+{/foreach}
+</body>
+</html>
