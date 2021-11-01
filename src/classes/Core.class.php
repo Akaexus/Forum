@@ -7,6 +7,8 @@ class Core extends Singleton
     }
     public function run() {
         $this->dispatcher();
+        Output::i()->cssFiles[] = '/assets/css/main.css';
+        Output::i()->jsFiles[] = 'https://kit.fontawesome.com/5efe299fc2.js';
         Output::i()->render();
     }
 

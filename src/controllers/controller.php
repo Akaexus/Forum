@@ -3,6 +3,7 @@
 abstract class Controller
 {
     public static $defaultController = 'board';
+    public static $breadcrumb = [];
     public static $controllers = [
         'board'=> [
             'loggedIn'=> true,
@@ -35,6 +36,7 @@ abstract class Controller
 
     public function __construct()
     {
+        Output::i()->addBreadcrumb(static::$breadcrumb);
         $this->execute();
     }
 }

@@ -7,7 +7,7 @@ abstract class ActiveRecord
     public static $columnNames;
     public $_new = false;
 
-    public function __construct($data)
+    public function __construct($data = [])
     {
         foreach ($data as $key => $value) {
             $this->$key = $value;

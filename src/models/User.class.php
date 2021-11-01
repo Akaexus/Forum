@@ -24,6 +24,28 @@ class User extends ActiveRecord
         }
     }
 
+    public function editForm() {
+        return static::form($this);
+    }
+
+    public static function form($e = null) {
+        $form = new \Nette\Forms\Form();
+        $form->addText('login')
+             ->setRequired('Wypełnij pole login');
+        return $form;
+    }
+
+    public static function loginForm() {
+        $form = new \Nette\Forms\Form();
+        $form->addText('name')
+             ->setRequired('Wypełnij pole login!')
+             ->setHtmlAttribute('placeholder', 'Login');
+        $form->addPassword('password')
+             ->setRequired('Wypełnij hasło!')
+             ->setHtmlAttribute('placeholder', 'Hasło');
+        $form->addSubmit('send', 'Zaloguj');
+        return $form;
+    }
 
     public static function login($login, $password)
     {

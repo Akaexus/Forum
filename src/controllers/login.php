@@ -1,9 +1,22 @@
 <?php
 
 class Login extends Controller {
+    public static $breadcrumb = [
+        [
+            'name'=> 'Zaloguj',
+            'url'=> '?controller=login'
+        ]
+    ];
     public function manage()
     {
-        Output::i()->add('manage');
+        $form = User::loginForm();
+        Output::i()->add(User::loginForm());
+        if ($form->isSuccess()) {
+            $formValues = $form->getValues();
+            Output::i()->add('<pre>');
+            Output::i()->add(print_r($formValues, 1));
+            Output::i()->add('</pre>');
+        }
 //        if (User::loggedIn()) {
 //            Output::i()->add('zalogowany');
 //        } else {
@@ -38,8 +51,8 @@ class Login extends Controller {
     public function execute()
     {
         Output::i()->title = 'Zaloguj';
-        Output::i()->showHeader = false;
-        Output::i()->showFooter = false;
-        Output::i()->showBreadcrumb = false;
+        Output::i()->showHeader = true;
+        Output::i()->showFooter = true;
+        Output::i()->showBreadcrumb = true;
     }
 }

@@ -5,28 +5,56 @@
     {if $title}
     <title>{$title} - Forum</title>
     {/if}
+    {foreach $cssFiles as $cssFile}
+        <link rel="stylesheet" href="{$cssFile}">
+    {/foreach}
 </head>
 <body class="controller-{$controller}">
 {if $header}
 {$header|noescape}
 {/if}
 <div id="wrapper">
-    {if $breadcrumb}
-    <div class="breadcrumb">
-        <a href="?">
-            <img class="home" src="assets/img/logo.png">
-        </a>
-        <ul>
-            {foreach $breadcrumb as $page}
-            <li>
-                <a href="{$page['url']}">
-                    {$page['name']}
+    <header class="main-header">
+        <div class="branding">
+            <div class="main_width">
+                <a href="/" id="logo">
+                    <img class="home" src="assets/img/logo.png">
                 </a>
-            </li>
-            {/foreach}
-        </ul>
-    </div>
-    {/if}
+
+                <div class="userbar">
+                    {if $user}
+                        userbar
+                    {else}
+                        nouser
+                    {/if}
+                </div>
+            </div>
+        </div>
+        {if $breadcrumb}
+        <div class="breadcrumb">
+            <div class="main_width">
+                <ul>
+                    {foreach $breadcrumb as $page}
+                    <li>
+                        <a href="{$page['url']}">
+                            {if $page['url'] == '/'}
+                                <i class="fas fa-home"></i>
+                            {else}
+                                <i class="fas fa-chevron-right"></i>
+                            {/if}
+                            {$page['name']}
+                        </a>
+                    </li>
+                    {/foreach}
+                </ul>
+                <div class="search_bar">
+                    szukajka
+                </div>
+            </div>
+        </div>
+        {/if}
+    </header>
+
     {$output|noescape}
 </div>
 {if $footer}

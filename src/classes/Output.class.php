@@ -12,7 +12,7 @@ class Output extends Singleton
     protected $templatingEngine;
     public $breadcrumb = [[
         'name'=> 'Forum',
-        'url'=> '?'
+        'url'=> '/'
     ]];
 
     public function addBreadcrumb($array)
@@ -67,7 +67,9 @@ class Output extends Singleton
                 'title'=> $this->title,
                 'output'=> $this->_output,
                 'jsFiles'=> $this->jsFiles,
+                'cssFiles'=> $this->cssFiles,
                 'breadcrumb'=> $this->showBreadcrumb ? $this->breadcrumb : null,
+                'user'=> User::loggedIn()
             ]
         );
         if ($toString) {
