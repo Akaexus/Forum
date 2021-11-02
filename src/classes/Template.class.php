@@ -4,17 +4,19 @@ class Template
 {
     public $controller;
     public $templateName;
-    public function __construct($controller, $templateName)
-    {
-        $this->controller = $controller;
-        $this->templateName = $templateName;
+
+    public static function i($controller = null) {
+        $controller = $controller ?? Request::i()->controller;
+        return new Template($controller);
     }
 
-    public function render($params = [])
+    public function __construct($controller)
     {
-        extract($params);
-        ob_start();
-        include ROOT_PATH . "templates/{$this->controller}/{$this->templateName}.phtml";
-        return ob_get_clean();
+        $this->templatingEngine = new Latte\Engine();
+        $this->controller = $controller;
+    }
+
+    public function renderTemplate($template, $params = []) {
+        return $this->templatingEngine->renderToString(ROOT_PATH."templates/{$this->controller}/{$template}.phtml", $params);
     }
 }

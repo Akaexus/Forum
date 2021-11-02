@@ -20,13 +20,6 @@ class Output extends Singleton
         $this->breadcrumb = array_merge($this->breadcrumb, $array);
     }
 
-    public function __construct()
-    {
-        $this->templatingEngine = new Latte\Engine();
-        if (defined('DEV_MODE') && DEV_MODE) {
-            $this->templatingEngine->setAutoRefresh(false);
-        }
-    }
 
     public function redirect($url, $internal = true)
     {
@@ -45,7 +38,7 @@ class Output extends Singleton
     public function error($errorCode = null, $message = null)
     {
         $this->add(
-            $this->renderTemplate(
+            $this->renderpage(
                 'core',
                 'error',
                 [
@@ -60,8 +53,7 @@ class Output extends Singleton
 
     public function render($toString = false)
     {
-        $output = $this->renderTemplate(
-            'core',
+        $output = Template::i('core')->renderTemplate(
             'core',
             [
                 'title'=> $this->title,
@@ -69,7 +61,9 @@ class Output extends Singleton
                 'jsFiles'=> $this->jsFiles,
                 'cssFiles'=> $this->cssFiles,
                 'breadcrumb'=> $this->showBreadcrumb ? $this->breadcrumb : null,
-                'user'=> User::loggedIn()
+                'user'=> User::loggedIn(),
+                'header'=> $this->showHeader ? Template::i('core')->renderTemplate('header', []) : null,
+                'footer'=> $this->showFooter ? Template::i('core')->renderTemplate('footer', [])  : null,
             ]
         );
         if ($toString) {
@@ -77,16 +71,6 @@ class Output extends Singleton
         } else {
             echo $output;
         }
-    }
-
-    public function renderTemplate($controller, $template, $params = [])
-    {
-        $header = $this->showHeader ? $this->templatingEngine->renderToString(ROOT_PATH."templates/core/header.phtml", []) : null;
-        $footer = $this->showFooter ? $this->templatingEngine->renderToString(ROOT_PATH."templates/core/footer.phtml", []) : null;
-        $params['controller'] = Request::i()->controller;
-        $params['header'] = $header;
-        $params['footer'] = $footer;
-        $output = $this->templatingEngine->renderToString(ROOT_PATH."templates/{$controller}/{$template}.phtml", $params);
-        return $output;
+        return true;
     }
 }
