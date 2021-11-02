@@ -84,3 +84,12 @@ footer.main-footer {
 footer.main-footer > .main_width {
     flex: 0 1 var(--min-container-width);
 }
+
+.message {
+    color: #fff;
+    padding: 16px;
+}
+
+.message.error {
+    background: #c53030;
+}

@@ -23,9 +23,12 @@
 
                 <div class="userbar">
                     {if $user}
-                        userbar
+                        <a href="?controller=member&id={$user->member_id}">
+                            {$user->name|noescape}
+                        </a> &nbsp;
+                        <a href="?controller=logout">Wyloguj</a>
                     {else}
-                        nouser
+                        <a href="?controller=login">Zaloguj</a>
                     {/if}
                 </div>
             </div>

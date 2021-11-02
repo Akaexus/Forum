@@ -34,14 +34,17 @@ abstract class ActiveRecord
         if ($this->_new) {
             $columnNames = static::$columnNames;
             unset($columnNames[array_search(static::$idColumn, $columnNames)]);
-
             $values = [];
             foreach ($columnNames as $column) {
-                $values[$column] = $this->$column;
+                if (!isset($this->$column)) {
+                    unset($columnNames[$column]);
+                } else {
+                    $values[$column] = $this->$column;
+                }
             }
             $id = DB::i()->insert(static::$databaseTable, $values);
             if ($id) {
-                $this->id = $id;
+                $this->$idColumn = $id;
             }
             return $id;
         } else {

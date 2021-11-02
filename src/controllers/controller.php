@@ -9,7 +9,7 @@ abstract class Controller
             'loggedIn'=> true,
         ],
         'register'=> [
-            'loggedIn'=> true,
+            'loggedIn'=> false,
         ],
         'login'=> [
             'loggedIn'=> false,

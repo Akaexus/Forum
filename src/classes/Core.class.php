@@ -9,6 +9,7 @@ class Core extends Singleton
         $this->dispatcher();
         Output::i()->cssFiles[] = '/assets/css/main.css';
         Output::i()->jsFiles[] = 'https://kit.fontawesome.com/5efe299fc2.js';
+        Output::i()->jsFiles[] = 'https://nette.github.io/resources/js/3/netteForms.min.js';
         Output::i()->render();
     }
 

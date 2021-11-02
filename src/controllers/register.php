@@ -1,6 +1,6 @@
 <?php
 
-class Login extends Controller {
+class Register extends Controller {
     public static $breadcrumb = [
         [
             'name'=> 'Zaloguj',
@@ -12,16 +12,17 @@ class Login extends Controller {
         if (User::loggedIn()) {
             Output::i()->redirect('?');
         } else {
-            $form = User::loginForm();
+            $form = User::registerForm();
             if ($form->isSuccess()) {
                 $formValues = $form->getValues();
-                $user = User::login($formValues['name'], $formValues['password']);
-                if ($user) {
+                $registeredUser = User::register($formValues);
+                if ($registeredUser) {
+                    User::forceLogin($registeredUser);
                     Output::i()->redirect('?');
                 } else {
                     Output::i()->add(Template::i()->renderTemplate('form', [
                         'form' => $form,
-                        'error' => 'Nazwa konta lub hasło nieprawidłowe'
+                        'error'=> 'Użytkownik o takiej nazwie lub emailu już istnieje!'
                     ]));
                 }
             } else {
