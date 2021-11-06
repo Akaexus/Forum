@@ -8,8 +8,9 @@
     {foreach $cssFiles as $cssFile}
         <link rel="stylesheet" href="{$cssFile}">
     {/foreach}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body class="controller-{$controller}">
+<body>
 {if $header}
 {$header|noescape}
 {/if}
@@ -57,8 +58,11 @@
         </div>
         {/if}
     </header>
-
-    {$output|noescape}
+    <main>
+        <div class="content">
+            {$output|noescape}
+        </div>
+    </main>
 </div>
 {if $footer}
 {$footer|noescape}

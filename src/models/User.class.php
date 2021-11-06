@@ -2,7 +2,7 @@
 
 class User extends ActiveRecord
 {
-
+    public static $cached_logged_in = null;
     public static $databaseTable = 'members';
     public static $idColumn = 'member_id';
     public static $columnNames = [
@@ -12,14 +12,21 @@ class User extends ActiveRecord
         'joined',
         'posts',
         'topics',
-        'password_hash'
+        'password_hash',
+        'is_admin',
     ];
 
+    public function isAdmin() {
+        return $this->is_admin;
+    }
 
     public static function loggedIn()
     {
         if (array_key_exists('user', $_SESSION)) {
-            return $_SESSION['user'];
+            if (self::$cached_logged_in == null) {
+                self::$cached_logged_in = User::load($_SESSION['user']);
+            }
+            return self::$cached_logged_in;
         } else {
             return null;
         }
@@ -80,7 +87,8 @@ class User extends ActiveRecord
         }
     }
     public static function forceLogin($user) {
-        $_SESSION['user'] = User::load($user->member_id); // refresh info
+        static::$cached_logged_in = null;
+        //$_SESSION['user'] = User::load($user->member_id); // refresh info
     }
 
     public static function login($login, $password)
@@ -100,7 +108,7 @@ class User extends ActiveRecord
         }
         $user = new User($accounts[0]);
         if (password_verify($password, $user->password_hash)) {
-            $_SESSION['user'] = $user;
+            $_SESSION['user'] = $user->member_id;
             return $user;
         } else {
             return null;

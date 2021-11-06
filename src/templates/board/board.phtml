@@ -1,0 +1,34 @@
+<ol class="forums">
+    {foreach $forums as $forum}
+    <li>
+        <div class="icon">
+            <i class="fas fa-comments"></i>
+        </div>
+        <div class="forum_info">
+            <h4>
+                <a href="?controller=forums&forum_id={$forum->forum_id|noescape}">
+                    {$forum->name|noescape}
+                </a>
+            </h4>
+            <p>{$forum->description|noescape}</p>
+        </div>
+        <div class="topics_count">
+            2137 tematów
+        </div>
+        <div class="last_poster">
+            Kurwa chuj<br>
+            przez admin
+        </div>
+        {if User::loggedIn()->isAdmin()}
+            <div class="admin_edit">
+                <a href="?controller=forums&forum_id={$forum->forum_id|noescape}&do=edit">
+                    <i class="fas fa-cog"></i>
+                </a>
+                <a href="?controller=forums&forum_id={$forum->forum_id|noescape}&do=delete">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </div>
+        {/if}
+    </li>
+    {/foreach}
+</ol>

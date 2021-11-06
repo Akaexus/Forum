@@ -9,7 +9,11 @@ class Board extends Controller {
     ];
     public function manage()
     {
-        Output::i()->add('board');
+        $forums = Forum::loadAll();
+        Output::i()->add(Template::i()->renderTemplate('board', [
+            'forums' => $forums,
+            'error' => 'Nazwa konta lub hasło nieprawidłowe'
+        ]));
     }
     public function execute()
     {

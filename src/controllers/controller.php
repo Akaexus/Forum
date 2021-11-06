@@ -11,6 +11,9 @@ abstract class Controller
         'register'=> [
             'loggedIn'=> false,
         ],
+        'forums'=> [
+            'loggedIn'=> true,
+        ],
         'login'=> [
             'loggedIn'=> false,
         ],

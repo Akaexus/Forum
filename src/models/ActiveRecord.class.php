@@ -76,12 +76,19 @@ abstract class ActiveRecord
             ]
         );
         if (!$entity) {
-            throw new Exception;
+            return null;
         } else {
             $entity = $entity[0];
         }
         $class = get_called_class();
         return new $class($entity);
+    }
+
+    public function apply($values = []) {
+        foreach ($values as $key => $value) {
+            $this->$key = $value;
+        }
+        $this->save();
     }
 
     public static function loadAll($where = null)
