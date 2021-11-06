@@ -1,0 +1,44 @@
+<div class="infobox">
+    <div class="avatar">
+        {$topic->author()->avatar('small')|noescape}
+    </div>
+    <div>
+        <h2>{$topic->title}</h2>
+        <span class="desc">napisany przez {$topic->author()->link()|noescape}, {$topic->created}</span>
+    </div>
+</div>
+<div class="posts">
+    {foreach $topic->posts() as $post}
+    <article class="post" id="post-{$post->post_id}">
+        <aside class="author_bar">
+            <h4>
+                {$post->author()->link()|noescape}
+            </h4>
+            {$post->author()->avatar('large')|noescape}
+            <span>
+                {$post->author()->group()|noescape}
+            </span>
+        </aside>
+        <div class="post_content">
+            <div class="meta desc small">
+                <div class="date">Napisano {$post->created}</div>
+                {if User::loggedIn()->isAdmin()}
+                    <div class="admin_controls">
+                        <div class="admin_edit">
+                            <a href="?controller=posts&topic={$post->post_id|noescape}&do=edit">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="?controller=posts&topic={$post->post_id|noescape}&do=delete">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    </div>
+                {/if}
+            </div>
+            <div class="content">
+                {$post->content|noescape}
+            </div>
+        </div>
+    </article>
+    {/foreach}
+</div>

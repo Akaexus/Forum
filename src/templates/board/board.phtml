@@ -13,11 +13,20 @@
             <p>{$forum->description|noescape}</p>
         </div>
         <div class="topics_count">
-            2137 tematów
+            <div class="number">{$forum->countTopics()}</div> tematów
         </div>
         <div class="last_poster">
-            Kurwa chuj<br>
-            przez admin
+            {if $forum->lastPost()}
+                <div class="avatar">
+                    {$forum->lastPost()->author()->avatar('tiny')|noescape}
+                </div>
+                <div>
+                    {$forum->lastPost()->topic()->link()|noescape}<br>
+                    przez {$forum->lastPost()->author()->link()|noescape}
+                </div>
+            {else}
+            <span class="desc">brak postów</span>
+            {/if}
         </div>
         {if User::loggedIn()->isAdmin()}
             <div class="admin_edit">

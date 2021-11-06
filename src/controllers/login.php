@@ -1,7 +1,7 @@
 <?php
 
 class Login extends Controller {
-    public static $breadcrumb = [
+    public $breadcrumb = [
         [
             'name'=> 'Zaloguj',
             'url'=> '?controller=login'

@@ -1,0 +1,45 @@
+<h2>{$forum->name}</h2>
+{if count($topics)}
+<ol class="topics">
+    {foreach $topics as $topic}
+        <li>
+            <div class="topic_info">
+                <h4>
+                    <a href="{$topic->url()}">
+                        {$topic->title}
+                    </a>
+                </h4>
+                <div class="details">przez {$topic->author()->link()|noescape} &middot; napisano {$topic->created}</div>
+            </div>
+            <div class="posts_count">
+                <div class="number">{$topic->countPosts()}</div> odpowiedzi
+            </div>
+            <div class="last_poster">
+                {if $topic->lastPost()}
+                <div class="avatar">
+                    {$topic->lastPost()->author()->avatar('tiny')|noescape}
+                </div>
+                <div>
+                    {$topic->link()|noescape}<br>
+                    przez {$topic->lastPost()->author()->link()|noescape}
+                </div>
+                {else}
+                <span class="desc">brak postów</span>
+                {/if}
+            </div>
+            {if User::loggedIn()->isAdmin()}
+            <div class="admin_edit">
+                <a href="?controller=topics&topic={$topic->topic_id|noescape}&do=edit">
+                    <i class="fas fa-cog"></i>
+                </a>
+                <a href="?controller=topics&topic_id={$topic->topic_id|noescape}&do=delete">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </div>
+            {/if}
+        </li>
+    {/foreach}
+</ol>
+{else}
+brak tematów
+{/if}

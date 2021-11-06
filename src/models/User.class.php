@@ -2,6 +2,7 @@
 
 class User extends ActiveRecord
 {
+    public static $cache = [];
     public static $cached_logged_in = null;
     public static $databaseTable = 'members';
     public static $idColumn = 'member_id';
@@ -16,6 +17,18 @@ class User extends ActiveRecord
         'is_admin',
     ];
 
+    public static function load($id) {
+        if (array_key_exists($id, User::$cache)) {
+            return User::$cache[$id];
+        } else {
+            $entity = parent::load($id);
+            if ($entity) {
+                User::$cache[$entity->member_id] = $entity;
+            }
+            return $entity;
+        }
+    }
+
     public function isAdmin() {
         return $this->is_admin;
     }
@@ -23,10 +36,7 @@ class User extends ActiveRecord
     public static function loggedIn()
     {
         if (array_key_exists('user', $_SESSION)) {
-            if (self::$cached_logged_in == null) {
-                self::$cached_logged_in = User::load($_SESSION['user']);
-            }
-            return self::$cached_logged_in;
+            return User::load($_SESSION['user']);
         } else {
             return null;
         }
@@ -115,7 +125,29 @@ class User extends ActiveRecord
         }
     }
 
+    public function url() {
+        return '?controller=members&member_id=' . $this->member_id;
+    }
 
+    public function link() {
+        return "<a href=\"{$this->url()}\">{$this->name}</a>";
+    }
+
+    public function avatarUrl() {
+        return '/assets/img/avatars/' . $this->name[0] . '.png';
+    }
+
+    public function avatar($size = 'small') {
+        return "<a href=\"{$this->url()}\"><img class=\"photo {$size}\" src=\"{$this->avatarUrl()}\" alt=\"\"></a>";
+    }
+
+    public function group() {
+        if ($this->isAdmin()) {
+            return "<span class=\"admin\">Administrator</span>";
+        } else {
+            return "<span>Użytkownik</span>";
+        }
+    }
 
     public static function logout()
     {

@@ -2,23 +2,14 @@
 
 class Forums extends Controller {
     public $forum = null;
-    public static $breadcrumb = [
-        [
-            'name'=> 'Board',
-            'url'=> '?controller=login'
-        ]
-    ];
+    public $breadcrumb;
+
     public function manage()
     {
-        $forums = Forum::loadAll();
-        if (Request::i()->forum_id) {
-            Output::i()->add(Request::i()->forum_id);
-        }
-//        Output::i()->add(Template::i()->renderTemplate('board', [
-//            'forums' => $forums,
-//            'error' => 'Nazwa konta lub hasło nieprawidłowe'
-//        ]));
-        Output::i()->add('forums');
+        Output::i()->add(Template::i()->renderTemplate('list', [
+            'forum' => $this->forum,
+            'topics' => $this->forum->getTopics(),
+        ]));
     }
 
     public function edit() {
@@ -29,7 +20,10 @@ class Forums extends Controller {
                 $this->forum->apply($form->getValues());
                 Output::i()->redirect($this->forum->url());
             } else {
-                Output::i()->add(Forum::form($this->forum));
+                Output::i()->add(Template::i()->renderTemplate('edit', [
+                    'forum' => $this->forum,
+                    'form' => $form
+                ]));
             }
         }
     }
@@ -44,5 +38,9 @@ class Forums extends Controller {
             Output::i()->redirect('?');
         }
         Output::i()->title = $this->forum->name;
+        $this->breadcrumb = [[
+            'name'=> $this->forum->name,
+            'url'=> $this->forum->url()
+        ]];
     }
 }

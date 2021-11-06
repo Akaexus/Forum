@@ -1,12 +1,7 @@
 <?php
 
 class Board extends Controller {
-    public static $breadcrumb = [
-        [
-            'name'=> 'Board',
-            'url'=> '?controller=login'
-        ]
-    ];
+    public $breadcrumb = [];
     public function manage()
     {
         $forums = Forum::loadAll();

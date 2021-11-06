@@ -91,21 +91,26 @@ abstract class ActiveRecord
         $this->save();
     }
 
-    public static function loadAll($where = null)
+    public static function loadAll($where = null, $count = false)
     {
         $query = [
-            'select'=> '*',
+            'select'=> $count ? 'count(*) as c' : '*',
             'from'=> static::$databaseTable
         ];
         if ($where) {
             $query['where'] = $where;
         }
-        return array_map(
-            function($e) {
-                return new static($e);
-            },
-            DB::i()->select($query)
-        );
+        $q = DB::i()->select($query);
+        if ($count) {
+            return $q[0]['c'];
+        } else {
+            return array_map(
+                function($e) {
+                    return new static($e);
+                },
+                $q
+            );
+        }
     }
 
     public function delete()

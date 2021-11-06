@@ -10,6 +10,7 @@ class Forum extends ActiveRecord
         'name',
         'description',
     ];
+    public $lastPost = null;
 
     public static function form($entity = null) {
         $form = new \Nette\Forms\Form();
@@ -27,5 +28,34 @@ class Forum extends ActiveRecord
 
     public function url() {
         return '?controller=forums&forum_id=' . $this->forum_id;
+    }
+
+    public function getTopics() {
+        return Topic::loadAll([
+            ['forum_id = ?', $this->forum_id]
+        ]);
+    }
+
+    public function lastPost() {
+        if (!$this->lastPost) {
+            $q = DB::i()->select([
+                'select'=> 'getLastForumPost(forum_id) as pid',
+                'from'=> static::$databaseTable,
+                'where'=> [
+                    ["forum_id = ?", $this->forum_id]
+                ]
+            ]);
+            if (!$q[0]['pid']) {
+                return null;
+            }
+            $this->lastPost = Post::load($q[0]['pid']);
+        }
+        return $this->lastPost;
+    }
+
+    public function countTopics() {
+        return Topic::loadAll([
+            ['forum_id = ?', $this->forum_id]
+        ], true);
     }
 }
