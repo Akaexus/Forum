@@ -1,5 +1,7 @@
 <div class="controls">
-    <a href="?controller=forums&do=add" class="button">Dodaj nowe forum</a>
+    {if User::loggedIn()->isAdmin()}
+        <a href="?controller=forums&do=add" class="button">Dodaj nowe forum</a>
+    {/if}
 </div>
 <ol class="forums">
     {foreach $forums as $forum}

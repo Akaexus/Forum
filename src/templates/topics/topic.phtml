@@ -2,9 +2,19 @@
     <div class="avatar">
         {$topic->author()->avatar('small')|noescape}
     </div>
-    <div>
+    <div class="topic_title">
         <h2>{$topic->title}</h2>
         <span class="desc">napisany przez {$topic->author()->link()|noescape}, {$topic->created}</span>
+    </div>
+    <div class="admin_controls">
+        {if User::loggedIn()->isAdmin()}
+        <a href="?controller=topics&do=edit&topic_id={$topic->topic_id}">
+            <i class="fas fa-edit"></i>
+        </a>
+        <a href="?controller=topics&do=delete&topic_id={$topic->topic_id}">
+            <i class="fas fa-trash"></i>
+        </a>
+        {/if}
     </div>
 </div>
 <div class="posts">

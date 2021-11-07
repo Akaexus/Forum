@@ -58,4 +58,5 @@ class Forum extends ActiveRecord
             ['forum_id = ?', $this->forum_id]
         ], true);
     }
+
 }

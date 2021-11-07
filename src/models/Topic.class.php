@@ -13,18 +13,65 @@ class Topic extends ActiveRecord
         'author_id'
     ];
 
+    public function firstPost() {
+        $q = DB::i()->select([
+            'select'=> '*',
+            'from'=> Post::$databaseTable,
+            'where'=> [
+                ['topic_id = ?', $this->topic_id]
+            ],
+            'order'=> 'post_id asc',
+            'limit'=> 1
+        ]);
+        return count($q) ? new Post($q[0]) : null;
+    }
+
     public static function form($entity = null) {
-//        $form = new \Nette\Forms\Form();
-//        $form->addText('name', 'Nazwa forum:')
-//            ->setRequired('Wypełnij nazwę forum:')
-//            ->addRule($form::MIN_LENGTH, 'Login musi mieć minimum 4 znaki!', 4)
-//            ->addRule($form::MAX_LENGTH, 'Login musi mieć maksimum 255 znaków!', 255)
-//            ->setDefaultValue($entity?->name);
-//        $form->addTextArea('description', 'Opis:')
-//            ->setDefaultValue($entity?->description)
-//            ->addRule($form::MAX_LENGTH, 'Opis może mieć maksymalnie 1000 znaków!', 1000);
-//        $form->addSubmit('send', 'Edytuj');
-//        return $form;
+        $form = new \Nette\Forms\Form();
+        $form->addText('title', 'Nazwa tematu:')
+            ->setRequired('Wypełnij nazwę tematu:')
+            ->addRule($form::MIN_LENGTH, 'Login musi mieć minimum 1 znak!', 1)
+            ->addRule($form::MAX_LENGTH, 'Login musi mieć maksimum 255 znaków!', 255)
+            ->setDefaultValue($entity?->title);
+        $form->addTextArea('content', 'Treść:')
+            ->setDefaultValue($entity?->firstPost()?->content)
+            ->addRule($form::MAX_LENGTH, 'Opis może mieć maksymalnie 10000 znaków!', 1000);
+
+        if ($entity && User::loggedIn()->isAdmin()) {
+
+            $fid = $entity->forum()->forum_id;
+            $forums = Forum::loadAll();
+
+            $forums_options = [];
+            foreach ($forums as $forum) {
+                $forums_options[$forum->forum_id] = $forum->name;
+            }
+
+            $form->addSelect('forum_id', 'Forum', $forums_options)
+                ->setRequired('Uzupełnij forum tematu!')
+                ->setDefaultValue($fid);
+
+            // authors
+            $members = User::loadAll();
+            $members_options = [];
+            foreach ($members as $member) {
+                $members_options[$member->member_id] = $member->name;
+            }
+            $form->addSelect('author_id', 'Autor', $members_options)
+                ->setDefaultValue($entity->author_id);
+
+            $form->addText('created', 'Data utworzenia:')
+                ->setHtmlType('datetime-local')
+                ->setRequired('Uzupełnij datę utworzenia posta!')
+                ->addRule("Post::validateDate", "Data musi być w poprawnym formacie!")
+                ->setDefaultValue(date('Y-m-d\TH:i', strtotime($entity->created)))
+                ->addFilter(function ($v) {
+                    return date("Y-m-d H:i:s", strtotime($v));
+                });
+        }
+
+        $form->addSubmit('send', 'Dodaj');
+        return $form;
     }
 
     public function posts() {

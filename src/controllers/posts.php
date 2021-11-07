@@ -27,6 +27,13 @@ class Posts extends Controller {
         }
     }
 
+    public function delete() {
+        if ($this->post->canEdit()) {
+            $this->post->delete();
+            Output::i()->redirect($this->post->topic()->url());
+        }
+    }
+
     public function execute()
     {
         if (isset(Request::i()->post_id) && ctype_digit(Request::i()->post_id)) {

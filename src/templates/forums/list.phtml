@@ -1,4 +1,18 @@
-<h2>{$forum->name}</h2>
+
+<div class="infobox">
+        <h2>{$forum->name}</h2>
+        <div class="admin_controls">
+            {if User::loggedIn()->isAdmin()}
+            <a href="?controller=forums&do=edit&forum_id={$forum->forum_id}">
+                <i class="fas fa-cog"></i>
+            </a>
+            <a href="?controller=forums&do=delete&forum_id={$forum->forum_id}">
+                <i class="fas fa-trash"></i>
+            </a>
+            {/if}
+            <a href="?controller=topics&do=add&forum_id={$forum->forum_id}" class="button">Nowy temat</a>
+        </div>
+</div>
 {if count($topics)}
 <ol class="topics">
     {foreach $topics as $topic}
@@ -29,7 +43,7 @@
             </div>
             {if User::loggedIn()->isAdmin()}
             <div class="admin_edit">
-                <a href="?controller=topics&topic={$topic->topic_id|noescape}&do=edit">
+                <a href="?controller=topics&topic_id={$topic->topic_id|noescape}&do=edit">
                     <i class="fas fa-cog"></i>
                 </a>
                 <a href="?controller=topics&topic_id={$topic->topic_id|noescape}&do=delete">

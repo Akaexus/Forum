@@ -257,14 +257,33 @@ ol.topics > li > .topic_info .details {
 .infobox {
     display: flex;
     margin-bottom: 1em;
+    align-items: center;
 }
+
+
 
 .infobox > .avatar {
     margin-right: 1em;
 }
 
+.infobox > .admin_controls {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+}
+
+.infobox > .admin_controls > * {
+    display: block;
+    margin-right: .5em;
+}
+
+.infobox .topic_title {
+    flex: 1 1 100%;
+}
+
 .infobox h2 {
     margin: 0;
+    flex: 0 1 100%;
 }
 
 .posts > .post {
