@@ -307,3 +307,20 @@ ol.topics > li > .topic_info .details {
     display: flex;
     justify-content: space-between;
 }
+
+.controls {
+    display: flex;
+    justify-content: end;
+    margin-bottom: 1em;
+}
+.controls > *:not(:first-of-type) {
+    margin-right: 1em;
+}
+
+.button {
+    background: var(--accent-color-primary);
+    display: block;
+    color: #fff;
+    padding: .5em 1em;
+    border-radius: .2em;
+}

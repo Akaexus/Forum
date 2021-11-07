@@ -20,28 +20,57 @@ class Post extends ActiveRecord
     public function topic() {
         return Topic::load($this->topic_id);
     }
-//
-//    public static function form($entity = null) {
-//        $form = new \Nette\Forms\Form();
-//        $form->addText('name', 'Nazwa forum:')
-//            ->setRequired('Wypełnij nazwę forum:')
-//            ->addRule($form::MIN_LENGTH, 'Login musi mieć minimum 4 znaki!', 4)
-//            ->addRule($form::MAX_LENGTH, 'Login musi mieć maksimum 255 znaków!', 255)
-//            ->setDefaultValue($entity?->name);
-//        $form->addTextArea('description', 'Opis:')
-//            ->setDefaultValue($entity?->description)
-//            ->addRule($form::MAX_LENGTH, 'Opis może mieć maksymalnie 1000 znaków!', 1000);
-//        $form->addSubmit('send', 'Edytuj');
-//        return $form;
-//    }
-//
-//    public function url() {
-//        return '?controller=forums&forum_id=' . $this->forum_id;
-//    }
-//
-//    public function getTopics() {
-//        return Topic::loadAll([
-//            ['forum_id = ?', $this->forum_id]
-//        ]);
-//    }
+
+    public function canEdit() {
+        return User::loggedIn()->member_id == $this->author_id || User::loggedIn()->isAdmin();
+    }
+
+    public static function form($entity = null) {
+        $form = new \Nette\Forms\Form();
+        $isAdmin = User::loggedIn()->isAdmin();
+        if ($entity && $isAdmin) {
+            $topics = Topic::loadAll();
+            $topic_options = [];
+            foreach ($topics as $topic) {
+                $topic_options[$topic->topic_id] = "[{$topic->topic_id}] $topic->title";
+            }
+
+            $form->addSelect('topic_id', 'Temat:', $topic_options)
+                ->setRequired()
+                ->setDefaultValue($entity->topic_id);
+
+            // authors
+            $members = User::loadAll();
+            $members_options = [];
+            foreach ($members as $member) {
+                $members_options[$member->member_id] = $member->name;
+            }
+            $form->addSelect('author_id', 'Autor', $members_options)
+                ->setDefaultValue($entity->author_id);
+
+            $form->addText('created', 'Data utworzenia:')
+                ->setHtmlType('datetime-local')
+                ->setRequired('Uzupełnij datę utworzenia posta!')
+                ->addRule("Post::validateDate", "Data musi być w poprawnym formacie!")
+                ->setDefaultValue(date('Y-m-d\TH:i', strtotime($entity->created)))
+                ->addFilter(function ($v) {
+                    return date("Y-m-d H:i:s", strtotime($v));
+                });
+        }
+
+        $form->addTextArea('content', 'Treść:')
+            ->setRequired('Uzupełnij treść posta!')
+            ->setDefaultValue($entity?->content)
+            ->addRule($form::MAX_LENGTH, 'Post może mieć maksymalnie 10000 znaków!', 10000);
+        $form->addSubmit('send', $entity ? 'Edytuj' : 'Dodaj');
+        return $form;
+    }
+    public static function validateDate($input) {
+        return strtotime($input->getValue());
+    }
+
+    public function url() {
+        return $this->topic()->url($this->post_id);
+    }
+
 }

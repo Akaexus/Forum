@@ -1,3 +1,6 @@
+<div class="controls">
+    <a href="?controller=forums&do=add" class="button">Dodaj nowe forum</a>
+</div>
 <ol class="forums">
     {foreach $forums as $forum}
     <li>
@@ -21,7 +24,7 @@
                     {$forum->lastPost()->author()->avatar('tiny')|noescape}
                 </div>
                 <div>
-                    {$forum->lastPost()->topic()->link()|noescape}<br>
+                    {$forum->lastPost()->topic()->link($forum->lastPost()->post_id)|noescape}<br>
                     przez {$forum->lastPost()->author()->link()|noescape}
                 </div>
             {else}

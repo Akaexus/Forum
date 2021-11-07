@@ -22,13 +22,13 @@
         <div class="post_content">
             <div class="meta desc small">
                 <div class="date">Napisano {$post->created}</div>
-                {if User::loggedIn()->isAdmin()}
+                {if $post->canEdit()}
                     <div class="admin_controls">
                         <div class="admin_edit">
-                            <a href="?controller=posts&topic={$post->post_id|noescape}&do=edit">
+                            <a href="?controller=posts&post_id={$post->post_id|noescape}&do=edit">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <a href="?controller=posts&topic={$post->post_id|noescape}&do=delete">
+                            <a href="?controller=posts&post_id={$post->post_id|noescape}&do=delete">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </div>
@@ -42,3 +42,5 @@
     </article>
     {/foreach}
 </div>
+<h3>Dodaj nowy post</h3>
+{$postForm}

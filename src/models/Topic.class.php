@@ -56,16 +56,20 @@ class Topic extends ActiveRecord
         }
     }
 
-    public function url() {
-        return '?controller=topics&topic_id=' . $this->topic_id;
+    public function url($postID = null) {
+        return '?controller=topics&topic_id=' . $this->topic_id . ($postID ? "#post-{$postID}" : '');
     }
 
-    public function link() {
-        return "<a href=\"{$this->url()}\">{$this->title}</a>";
+    public function link($postID = null) {
+        return "<a href=\"{$this->url($postID)}\">{$this->title}</a>";
     }
 
     public function author() {
         return User::load($this->author_id);
+    }
+
+    public function canEdit() {
+        return User::loggedIn()->member_id == $this->author_id || User::loggedIn()->isAdmin();
     }
 
     public function forum() {

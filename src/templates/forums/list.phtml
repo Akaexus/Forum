@@ -20,7 +20,7 @@
                     {$topic->lastPost()->author()->avatar('tiny')|noescape}
                 </div>
                 <div>
-                    {$topic->link()|noescape}<br>
+                    {$topic->link($topic->lastPost()->post_id)|noescape}<br>
                     przez {$topic->lastPost()->author()->link()|noescape}
                 </div>
                 {else}

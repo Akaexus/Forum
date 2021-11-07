@@ -14,6 +14,9 @@ abstract class Controller
         'forums'=> [
             'loggedIn'=> true,
         ],
+        'posts'=> [
+            'loggedIn'=> true,
+        ],
         'topics'=> [
             'loggedIn'=> true,
         ],

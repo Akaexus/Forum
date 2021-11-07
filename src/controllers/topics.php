@@ -5,10 +5,23 @@ class Topics extends Controller {
     public $breadcrumb;
     public function manage()
     {
+        $postForm = Post::form();
+        if ($postForm->isSuccess()) {
+            $post_data = $postForm->getValues();
+            $post_data['author_id'] = User::loggedIn()->member_id;
+            $post_data['topic_id'] = $this->topic->topic_id;
+            $post = new Post($post_data);
+            $post->_new = true;
+            $post->save();
+            Output::i()->redirect($post->url());
+        }
         Output::i()->add(Template::i()->renderTemplate('topic', [
             'topic' => $this->topic,
+            'postForm'=> Post::form()
         ]));
     }
+
+
 
 //    public function edit() {
 //        if (User::loggedIn()->isAdmin()) {
