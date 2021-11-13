@@ -9,6 +9,9 @@
         </div>
     </div>
     <div class="info">
+        {if $member->canEdit()}
+            <a href="{$member->url()}&do=edit" class="button">Edytuj</a>
+        {/if}
         {if $member->canFollow()}
             {if $member->isFollowed()}
                 <a href="{$member->url()}&do=follow" class="button grey">Przestań obserwować</a>
@@ -71,6 +74,13 @@
         </div>
     </aside>
     <article>
-        O mnie
+        {if !empty($member->about)}
+            <div class="box">
+                <h2>O mnie</h2>
+                <div class="box_content">
+                    {$member->about|noescape}
+                </div>
+            </div>
+        {/if}
     </article>
 </div>

@@ -37,6 +37,29 @@ class Members extends Controller {
         }
     }
 
+    public function edit() {
+        if ($this->member->canEdit()) {
+            $form = User::form($this->member);
+            if ($form->isSuccess()) {
+                $values = $form->getValues();
+                if (!isset($values['is_admin'])) {
+                    $values['is_admin'] = false;
+                }
+                if (!empty($values['password'])) {
+                    $values['password_hash'] = password_hash($values['password'], PASSWORD_DEFAULT);
+                    unset($values['password']);
+                }
+                $this->member->apply($values);
+                Output::i()->redirect($this->member->url());
+            } else {
+                Output::i()->add(Template::i()->renderTemplate('edit', [
+                    'form' => $form,
+                ]));
+            }
+        } else {
+            Output::i()->redirect($this->member->url());
+        }
+    }
     public function list() {
         Output::i()->add(Template::i()->renderTemplate('list', [
             'members' => User::loadAll(),

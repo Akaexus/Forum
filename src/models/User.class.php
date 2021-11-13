@@ -15,6 +15,7 @@ class User extends ActiveRecord
         'topics',
         'password_hash',
         'is_admin',
+        'about'
     ];
 
     public static function load($id) {
@@ -54,10 +55,10 @@ class User extends ActiveRecord
     public static function registerForm($e = null) {
         $form = new \Nette\Forms\Form();
         $form->addText('name', 'Login:')
-             ->setRequired('Wypełnij pole login!')
-             ->addRule($form::MIN_LENGTH, 'Login musi mieć minimum 4 znaki!', 4)
-             ->addRule($form::MAX_LENGTH, 'Login musi mieć maksimum 255 znaków!', 255)
-             ->addRule($form::PATTERN_ICASE, "Login może się składać tylko ze znaków alfanunmerycznych oraz _ oraz -.", "^[a-z0-9_-]+$");
+            ->setRequired('Wypełnij pole login!')
+            ->addRule($form::MIN_LENGTH, 'Login musi mieć minimum 4 znaki!', 4)
+            ->addRule($form::MAX_LENGTH, 'Login musi mieć maksimum 255 znaków!', 255)
+            ->addRule($form::PATTERN_ICASE, "Login może się składać tylko ze znaków alfanunmerycznych oraz _ oraz -.", "^[ żółćęśąźńa-z0-9_-]+$");
         $form->addEmail('email', 'Email:')
             ->setRequired('Wypełnij pole email!')
             ->addRule($form::EMAIL, 'Wpisz poprawny adres email!')
@@ -70,6 +71,64 @@ class User extends ActiveRecord
             ->setRequired('Powtórz hasło!')
             ->addRule($form::EQUAL, 'Password mismatch', $form['password'])
             ->setOmitted();
+        $form->addSubmit('send', 'Zarejestruj');
+        return $form;
+    }
+
+    public static function form($e = null) {
+        $form = new \Nette\Forms\Form();
+        // name
+        $form->addText('name', 'Login:')
+             ->setRequired('Wypełnij pole login!')
+             ->setDefaultValue($e?->name)
+             ->addRule($form::MIN_LENGTH, 'Login musi mieć minimum 4 znaki!', 4)
+             ->addRule($form::MAX_LENGTH, 'Login musi mieć maksimum 255 znaków!', 255)
+             ->addRule($form::PATTERN_ICASE, "Login może się składać tylko ze znaków alfanunmerycznych oraz _ oraz -.", "^[ żółćęśąźńa-z0-9_-]+$")
+             ->addRule(function($name, $member_id) {
+                 return User::loadAll([
+                     ['name=?', $name->getValue()],
+                     ['member_id!=?', $member_id]
+                 ], true) == 0;
+             }, 'Login jest już zajęty!', $e->member_id);
+
+        $form->addEmail('email', 'Email:')
+            ->setDefaultValue($e?->email)
+            ->setRequired('Wypełnij pole email!')
+            ->addRule($form::EMAIL, 'Wpisz poprawny adres email!')
+            ->addRule($form::MAX_LENGTH, 'Login musi mieć maksimum 255 znaków!', 255)
+            ->addRule(function($name, $member_id) {
+                return User::loadAll([
+                        ['email=?', $name->getValue()],
+                        ['member_id!=?', $member_id]
+                    ], true) == 0;
+            }, 'Email jest już zajęty!', $e->member_id);
+
+        $form->addPassword('password', 'Hasło:')
+            ->addRule($form::MIN_LENGTH, 'Hasło musi mieć minimum 4 znaki!', 4)
+            ->addRule($form::MAX_LENGTH, 'Hasło musi mieć maksimum 72 znaków!', 72);
+        $form->addPassword('password_verify', 'Powtórz hasło:')
+            ->addRule($form::EQUAL, 'Password mismatch', $form['password'])
+            ->setOmitted();
+
+        $form->addTextArea('about', 'O mnie:')
+            ->setDefaultValue($e->about)
+            ->addRule($form::MAX_LENGTH, 'Opis może mieć maksymalnie 10000 znaków!', 1000);
+
+        if (User::loggedIn()->isAdmin()) {
+            $form->addText('joined', 'Data dołączenia:')
+                ->setHtmlType('datetime-local')
+                ->setRequired('Uzupełnij datę dołączenia!')
+                ->addRule("Post::validateDate", "Data musi być w poprawnym formacie!")
+                ->setDefaultValue(date('Y-m-d\TH:i', strtotime($e->joined)))
+                ->addFilter(function ($v) {
+                    return date("Y-m-d H:i:s", strtotime($v));
+                });
+
+            $form->addCheckbox('is_admin', 'Is Administrator?')
+                ->setDefaultValue($e?->is_admin);
+
+        }
+
         $form->addSubmit('send', 'Zarejestruj');
         return $form;
     }
@@ -158,6 +217,10 @@ class User extends ActiveRecord
     {
         $_SESSION['user'] = null;
         session_destroy();
+    }
+
+    public function canEdit() {
+        return User::loggedIn()->member_id == $this->member_id || User::loggedIn()->isAdmin();
     }
 
     public function canFollow() {

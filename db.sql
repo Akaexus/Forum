@@ -31,7 +31,7 @@ CREATE TABLE `followers` (
   KEY `followed_id` (`followed_id`),
   CONSTRAINT `followers_ibfk_1` FOREIGN KEY (`follower_id`) REFERENCES `members` (`member_id`),
   CONSTRAINT `followers_ibfk_2` FOREIGN KEY (`followed_id`) REFERENCES `members` (`member_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `followers` (
 
 LOCK TABLES `followers` WRITE;
 /*!40000 ALTER TABLE `followers` DISABLE KEYS */;
-INSERT INTO `followers` VALUES (6,2,3),(7,2,4),(9,2,1),(10,4,1);
+INSERT INTO `followers` VALUES (6,2,3),(7,2,4),(9,2,1),(10,4,1),(11,3,1);
 /*!40000 ALTER TABLE `followers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -85,6 +85,7 @@ CREATE TABLE `members` (
   `topics` int(11) NOT NULL DEFAULT 0,
   `password_hash` varchar(60) COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_admin` tinyint(1) NOT NULL DEFAULT 0,
+  `about` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`member_id`),
   UNIQUE KEY `name` (`name`),
   UNIQUE KEY `email` (`email`)
@@ -97,7 +98,7 @@ CREATE TABLE `members` (
 
 LOCK TABLES `members` WRITE;
 /*!40000 ALTER TABLE `members` DISABLE KEYS */;
-INSERT INTO `members` VALUES (1,'Damazy Pióropusz','admin@admin.pl','2021-11-02 20:27:03',0,0,'$2y$10$8cDiLIHLQbx..Wbbh/oiOuEimKeoe3jHx1gSrbLrK769ajSw0RZim',1),(2,'user1','admin2@admin.pl','2021-11-02 21:44:50',0,0,'$2y$10$wB0FvzGoul3q5IsefhXMMei/RCqbfjTrg.RkkBHQJXNGOcEzgqg/.',0),(3,'admin3','admin3@admin.pl','2021-11-02 21:45:44',0,0,'$2y$10$/Hrmgo4GomLR5MIAh0JTce3rLPRcpcrNg5aeNyVB3hi/csYr1auk.',0),(4,'admin4','admin4@admin.pl','2021-11-02 21:47:19',0,0,'$2y$10$RQJjvSv4NNIcMFSqH/.6buLjsS1pCx9bsWMyJOSuEFSlAa.7oCzTa',0);
+INSERT INTO `members` VALUES (1,'Damazy Pióropusz','admin@admin.pl','2020-11-02 20:27:00',0,0,'$2y$10$8cDiLIHLQbx..Wbbh/oiOuEimKeoe3jHx1gSrbLrK769ajSw0RZim',1,'Kapucyn[1] (zwany przez miejscową ludność Ostrym Kamieniem[2]) – ostaniec wierzchowinowy wchodzący w skład grupy skał zwanych Ostańcami Jerzmanowickimi. Znajduje się w najwyższych partiach Wyżyny Olkuskiej, w miejscowości Jerzmanowice, w odległości ok. 800 m na południowy zachód od drogi krajowej nr 94[3]. Jest jednym z ostańców w grupie skał ciągnących się od Grodziska, zwanego też Wzgórzem 502 lub Skałą 502, w północnym kierunku. W grupie tej kolejno znajdują się: Grodzisko, Mały Mur, Kapucyn, Słup (Palec), Soczewka, Ostry Kamień i Polna Skałka[1]. '),(2,'user1','admin2@admin.pl','2021-11-02 21:44:00',0,0,'$2y$10$/3WDPhvZXEs2pQlxijiXouPcoN9xy9p3QMvvs.2sjh1awM8M1Vi/K',0,'<strong>poland strong</strong> tak'),(3,'admin3','admin3@admin.pl','2021-11-02 21:45:44',0,0,'$2y$10$/Hrmgo4GomLR5MIAh0JTce3rLPRcpcrNg5aeNyVB3hi/csYr1auk.',0,NULL),(4,'admin4','admin4@admin.pl','2021-11-02 21:47:19',0,0,'$2y$10$RQJjvSv4NNIcMFSqH/.6buLjsS1pCx9bsWMyJOSuEFSlAa.7oCzTa',0,NULL);
 /*!40000 ALTER TABLE `members` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -252,4 +253,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-13 21:54:38
+-- Dump completed on 2021-11-13 23:10:37

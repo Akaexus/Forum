@@ -54,11 +54,12 @@ abstract class ActiveRecord
             foreach (static::$columnNames as $column) {
                 $values[] = $this->$column;
             }
-
             $query = 'update '.static::$databaseTable.' set ';
             $params = [];
             foreach (static::$columnNames as $column) {
+                $this->$column = $this->$column === false ? '0' : $this->$column;
                 $params[] = "{$column}='{$this->$column}'";
+
             }
             $query .= implode(',', $params);
             $query .= ' where '.static::$idColumn.'='.$this->$idColumn;
