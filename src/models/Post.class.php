@@ -13,6 +13,8 @@ class Post extends ActiveRecord
         'content'
     ];
 
+    public $reactions = null;
+
     public function author() {
         return User::load($this->author_id);
     }
@@ -73,4 +75,37 @@ class Post extends ActiveRecord
         return $this->topic()->url($this->post_id);
     }
 
+    public function loadPostReactions() {
+        if (is_null($this->reactions)) {
+            $this->reactions = Reaction::loadAll([
+                ['post_id=?', $this->post_id]
+            ]);
+        }
+        return $this->reactions;
+    }
+
+    public function reacted() {
+        $reactions = $this->loadPostReactions();
+        $mid = User::loggedIn()->member_id;
+        foreach ($reactions as $reaction) {
+            if ($reaction->member_id == $mid) {
+                return $reaction;
+            }
+        }
+        return false;
+    }
+
+    public function canReact() {
+        return User::loggedIn()->member_id != $this->author_id;
+    }
+
+    public function reputation() {
+        return Reaction::loadAll([
+            ['post_id=?', $this->post_id]
+        ], true);
+    }
+
+    public function reactUrl() {
+        return "?controller=posts&post_id={$this->post_id}&do=react";
+    }
 }

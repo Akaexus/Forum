@@ -303,7 +303,11 @@ ol.topics > li > .topic_info .details {
     padding: 1em;
     text-align: center;
 }
-
+.post > .author_bar .reputation {
+    color: #006200;
+    display: block;
+    font-size: 0.9rem;
+}
 .post > .author_bar > h4 {
     margin-top: 0;
 }
@@ -311,6 +315,28 @@ ol.topics > li > .topic_info .details {
 .post > .post_content {
     flex: 0 1 100%;
     padding: 0 1em 1em 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.reaction.reacted {
+    color: #30779a;
+}
+
+.post > .post_content > .content {
+    flex: 1 1 100%;
+}
+
+.post > .post_content > .reactions {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+}
+
+.post > .post_content > .reactions > .reputation {
+    font-size: 0.9rem;
+    margin-left: 1em;
+    color: #006200;
 }
 
 .admin {

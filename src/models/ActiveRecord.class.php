@@ -33,7 +33,10 @@ abstract class ActiveRecord
         $values = [];
         if ($this->_new) {
             $columnNames = static::$columnNames;
-            unset($columnNames[array_search(static::$idColumn, $columnNames)]);
+            $primaryKeyID = array_search(static::$idColumn, $columnNames);
+            if ($primaryKeyID !== false) {
+                unset($columnNames[$primaryKeyID]);
+            }
             $values = [];
             foreach ($columnNames as $column) {
                 if (!isset($this->$column)) {

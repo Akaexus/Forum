@@ -25,9 +25,13 @@
                 {$post->author()->link()|noescape}
             </h4>
             {$post->author()->avatar('large')|noescape}
+            <span class="reputation">
+                <i class="fas fa-plus-circle"></i> {$post->author()->reputation()}
+            </span>
             <span>
                 {$post->author()->group()|noescape}
             </span>
+
         </aside>
         <div class="post_content">
             <div class="meta desc small">
@@ -47,6 +51,23 @@
             </div>
             <div class="content">
                 {$post->content|noescape}
+            </div>
+            <div class="reactions">
+                {if $post->canReact()}
+                    <a href="{$post->reactUrl()}" class="reaction {if $post->reacted()}reacted{/if}">
+                        <i class="fas fa-thumbs-up"></i>
+                        <span>
+                        {if $post->reacted()}
+                            Lubisz to!
+                        {else}
+                            Lubię to!
+                        {/if}
+                        </span>
+                    </a>
+                {/if}
+                <div class="reputation">
+                    <i class="fas fa-plus-circle"></i> {$post->reputation()}
+                </div>
             </div>
         </div>
     </article>

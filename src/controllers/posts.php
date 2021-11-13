@@ -27,6 +27,24 @@ class Posts extends Controller {
         }
     }
 
+    public function react() {
+        if ($this->post->canReact()) {
+            $reactions = $this->post->loadPostReactions();
+            $reaction = $this->post->reacted();
+            if ($reaction) {
+                $reaction->delete();
+            } else {
+                $reaction = new Reaction([
+                    'member_id' => User::loggedIn()->member_id,
+                    'post_id' => $this->post->post_id,
+                ]);
+                $reaction->_new = true;
+                $reaction->save();
+            }
+            Output::i()->redirect($this->post->url());
+        }
+    }
+
     public function delete() {
         if ($this->post->canEdit()) {
             $this->post->delete();

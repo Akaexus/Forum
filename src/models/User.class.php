@@ -42,6 +42,11 @@ class User extends ActiveRecord
         }
     }
 
+    public function reputation() {
+        $q = DB::i()->query("select count(*) as c from reactions r join posts p on r.post_id = p.post_id where p.author_id={$this->member_id}")->fetch();
+        return $q['c'];
+    }
+
     public function editForm() {
         return static::form($this);
     }
