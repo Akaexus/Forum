@@ -1,0 +1,24 @@
+<ol class="members">
+    {foreach $members as $member}
+        <li>
+            <div class="avatar">
+                {$member->avatar('small')|noescape}
+            </div>
+            <div class="name">
+                {$member->link()|noescape}<br>
+                <div class="reputation">
+                    <i class="fas fa-plus-circle"></i> {$member->reputation()}
+                </div>
+            </div>
+            <div class="follow">
+                {if $member->canFollow()}
+                    {if $member->isFollowed()}
+                        <a href="{$member->url()}&do=follow" class="button grey">Przestań obserwować</a>
+                    {else}
+                        <a href="{$member->url()}&do=follow" class="button">Obserwuj</a>
+                    {/if}
+                {/if}
+            </div>
+        </li>
+    {/foreach}
+</ol>

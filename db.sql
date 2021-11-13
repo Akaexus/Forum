@@ -16,6 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `followers`
+--
+
+DROP TABLE IF EXISTS `followers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `followers` (
+  `follow_id` int(11) NOT NULL AUTO_INCREMENT,
+  `followed_id` bigint(20) NOT NULL,
+  `follower_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`follow_id`),
+  KEY `follower_id` (`follower_id`),
+  KEY `followed_id` (`followed_id`),
+  CONSTRAINT `followers_ibfk_1` FOREIGN KEY (`follower_id`) REFERENCES `members` (`member_id`),
+  CONSTRAINT `followers_ibfk_2` FOREIGN KEY (`followed_id`) REFERENCES `members` (`member_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `followers`
+--
+
+LOCK TABLES `followers` WRITE;
+/*!40000 ALTER TABLE `followers` DISABLE KEYS */;
+INSERT INTO `followers` VALUES (6,2,3),(7,2,4),(9,2,1),(10,4,1);
+/*!40000 ALTER TABLE `followers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `forums`
 --
 
@@ -68,7 +97,7 @@ CREATE TABLE `members` (
 
 LOCK TABLES `members` WRITE;
 /*!40000 ALTER TABLE `members` DISABLE KEYS */;
-INSERT INTO `members` VALUES (1,'admin','admin@admin.pl','2021-11-02 20:27:03',0,0,'$2y$10$8cDiLIHLQbx..Wbbh/oiOuEimKeoe3jHx1gSrbLrK769ajSw0RZim',1),(2,'user1','admin2@admin.pl','2021-11-02 21:44:50',0,0,'$2y$10$wB0FvzGoul3q5IsefhXMMei/RCqbfjTrg.RkkBHQJXNGOcEzgqg/.',0),(3,'admin3','admin3@admin.pl','2021-11-02 21:45:44',0,0,'$2y$10$/Hrmgo4GomLR5MIAh0JTce3rLPRcpcrNg5aeNyVB3hi/csYr1auk.',0),(4,'admin4','admin4@admin.pl','2021-11-02 21:47:19',0,0,'$2y$10$RQJjvSv4NNIcMFSqH/.6buLjsS1pCx9bsWMyJOSuEFSlAa.7oCzTa',0);
+INSERT INTO `members` VALUES (1,'Damazy Pióropusz','admin@admin.pl','2021-11-02 20:27:03',0,0,'$2y$10$8cDiLIHLQbx..Wbbh/oiOuEimKeoe3jHx1gSrbLrK769ajSw0RZim',1),(2,'user1','admin2@admin.pl','2021-11-02 21:44:50',0,0,'$2y$10$wB0FvzGoul3q5IsefhXMMei/RCqbfjTrg.RkkBHQJXNGOcEzgqg/.',0),(3,'admin3','admin3@admin.pl','2021-11-02 21:45:44',0,0,'$2y$10$/Hrmgo4GomLR5MIAh0JTce3rLPRcpcrNg5aeNyVB3hi/csYr1auk.',0),(4,'admin4','admin4@admin.pl','2021-11-02 21:47:19',0,0,'$2y$10$RQJjvSv4NNIcMFSqH/.6buLjsS1pCx9bsWMyJOSuEFSlAa.7oCzTa',0);
 /*!40000 ALTER TABLE `members` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -119,7 +148,7 @@ CREATE TABLE `reactions` (
   KEY `post_id` (`post_id`),
   CONSTRAINT `reactions_ibfk_1` FOREIGN KEY (`member_id`) REFERENCES `members` (`member_id`),
   CONSTRAINT `reactions_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `posts` (`post_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -128,7 +157,7 @@ CREATE TABLE `reactions` (
 
 LOCK TABLES `reactions` WRITE;
 /*!40000 ALTER TABLE `reactions` DISABLE KEYS */;
-INSERT INTO `reactions` VALUES (1,1,19),(4,1,18),(9,1,15);
+INSERT INTO `reactions` VALUES (1,1,19),(4,1,18),(10,1,3),(11,1,2);
 /*!40000 ALTER TABLE `reactions` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -223,4 +252,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-13 10:34:37
+-- Dump completed on 2021-11-13 21:54:38

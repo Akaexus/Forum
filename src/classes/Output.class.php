@@ -17,7 +17,9 @@ class Output extends Singleton
 
     public function addBreadcrumb($array)
     {
-        $this->breadcrumb = array_merge($this->breadcrumb, $array);
+        if ($array) {
+            $this->breadcrumb = array_merge($this->breadcrumb, $array);
+        }
     }
 
 

@@ -23,9 +23,15 @@ abstract class Controller
         'login'=> [
             'loggedIn'=> false,
         ],
-        'logout' => [
-            'loggedIn'=> true
+        'members' => [
+            'loggedIn'=> true,
         ],
+        'logout' => [
+            'loggedIn'=> true,
+        ],
+        'follows' => [
+            'loggedIn'=> true,
+        ]
     ];
 
     public static function _checkAvailableController($controller) {

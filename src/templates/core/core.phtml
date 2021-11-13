@@ -24,7 +24,7 @@
 
                 <div class="userbar">
                     {if $user}
-                        <a href="?controller=member&id={$user->member_id}">
+                        <a href="{User::loggedIn()->url()}">
                             {$user->name|noescape}
                         </a> &nbsp;
                         <a href="?controller=logout">Wyloguj</a>
@@ -51,8 +51,10 @@
                     </li>
                     {/foreach}
                 </ul>
+                <a href="?controller=members&do=list">Użytkownicy</a>
+                <a href="?controller=follows">Tablica</a>
                 <div class="search_bar">
-                    szukajka
+                    <input type="text">
                 </div>
             </div>
         </div>

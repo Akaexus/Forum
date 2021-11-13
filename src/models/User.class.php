@@ -139,7 +139,7 @@ class User extends ActiveRecord
     }
 
     public function avatarUrl() {
-        return '/assets/img/avatars/' . $this->name[0] . '.png';
+        return '/assets/img/avatars/' . strtolower($this->name[0]) . '.png';
     }
 
     public function avatar($size = 'small') {
@@ -158,5 +158,39 @@ class User extends ActiveRecord
     {
         $_SESSION['user'] = null;
         session_destroy();
+    }
+
+    public function canFollow() {
+        return $this->member_id != User::loggedIn()->member_id;
+    }
+
+    public function postCount() {
+        return Post::loadAll([
+            ['author_id=?', $this->member_id]
+        ], true);
+    }
+
+    public function isFollowed() {
+        $followers = Follow::loadAll([
+            ['follower_id=?', User::loggedIn()->member_id],
+            ['followed_id=?', $this->member_id],
+        ]);
+        if (count($followers)) {
+            return $followers[0];
+        } else {
+            return null;
+        }
+    }
+
+    public function followers($count = false) {
+        return Follow::loadAll([
+            ['followed_id=?', $this->member_id]
+        ], $count);
+    }
+
+    public function followed($count = false) {
+        return Follow::loadAll([
+            ['follower_id=?', $this->member_id]
+        ], $count);
     }
 }

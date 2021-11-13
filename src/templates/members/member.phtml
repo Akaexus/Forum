@@ -1,0 +1,76 @@
+<div class="member_header">
+    <div class="background">
+        <div class="avatar">
+            {$member->avatar('xlarge')|noescape}
+        </div>
+        <div class="nickname">
+            <div class="nick">{$member->name}</div><br>
+            <div class="group">{$member->group()|noescape}</div>
+        </div>
+    </div>
+    <div class="info">
+        {if $member->canFollow()}
+            {if $member->isFollowed()}
+                <a href="{$member->url()}&do=follow" class="button grey">Przestań obserwować</a>
+            {else}
+                <a href="{$member->url()}&do=follow" class="button">Obserwuj</a>
+            {/if}
+        {/if}
+        <div class="stat">
+            <div class="description">Liczba postów</div>
+            <div class="value">{$member->postCount()}</div>
+        </div>
+        <div class="stat">
+            <div class="description">Rejestracja</div>
+            <div class="value">{date("F j, Y",strtotime($member->joined))}</div>
+        </div>
+        <div class="stat">
+            <div class="description">Obserwujących</div>
+            <div class="value">{$member->followers(true)}</div>
+        </div>
+    </div>
+</div>
+<div class="member_content">
+    <aside>
+        <div class="reputation {if $member->reputation() > 0}good{/if}">
+            <div class="desc">Reputacja</div>
+            <div class="number">{$member->reputation()}</div>
+        </div>
+        <div class="box">
+            <h2>Obserwatorzy</h2>
+            <div class="box_content">
+                {if $member->followers(true) > 0}
+                    <div class="avatar_grid">
+                        {foreach $member->followers() as $follow}
+                        <div class="avatar">
+                            {$follow->follower()->avatar('mini')|noescape}
+                        </div>
+                        {/foreach}
+                    </div>
+                {else}
+                <span class="desc" style="text-align: center; display: block;">Brak obserwatorów!</span>
+                {/if}
+            </div>
+        </div>
+
+        <div class="box">
+            <h2>Obserwowani</h2>
+            <div class="box_content">
+                {if $member->followed(true) > 0}
+                <div class="avatar_grid">
+                    {foreach $member->followed() as $follow}
+                    <div class="avatar">
+                        {$follow->followed()->avatar('mini')|noescape}
+                    </div>
+                    {/foreach}
+                </div>
+                {else}
+                <span class="desc" style="text-align: center; display: block;">Brak obserwatorów!</span>
+                {/if}
+            </div>
+        </div>
+    </aside>
+    <article>
+        O mnie
+    </article>
+</div>

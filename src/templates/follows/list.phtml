@@ -1,0 +1,33 @@
+<h1 style="margin-top: 0;">Tablica</h1>
+<div class="posts">
+    {foreach $posts as $post}
+    <a href="{$post->topic()->url()|noescape}" class="topic_title">
+        <h3>
+            {$post->topic()->title}
+        </h3>
+    </a>
+    <article class="post" id="post-{$post->post_id}">
+        <aside class="author_bar">
+            <h4>
+                {$post->author()->link()|noescape}
+            </h4>
+            {$post->author()->avatar('large')|noescape}
+            <span class="reputation">
+                <i class="fas fa-plus-circle"></i> {$post->author()->reputation()}
+            </span>
+            <span>
+                {$post->author()->group()|noescape}
+            </span>
+
+        </aside>
+        <div class="post_content">
+            <div class="meta desc small">
+                <div class="date">Napisano {$post->created}</div>
+            </div>
+            <div class="content">
+                {$post->content|noescape}
+            </div>
+        </div>
+    </article>
+    {/foreach}
+</div>
