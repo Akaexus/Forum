@@ -11,8 +11,6 @@ class User extends ActiveRecord
         'name',
         'email',
         'joined',
-        'posts',
-        'topics',
         'password_hash',
         'is_admin',
         'about'

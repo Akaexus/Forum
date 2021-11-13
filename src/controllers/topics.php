@@ -80,6 +80,7 @@ class Topics extends Controller {
 
     public function delete() {
         if ($this->topic->canEdit()) {
+
             DB::i()->delete([
                 'from'=> 'posts',
                 'where'=> [
