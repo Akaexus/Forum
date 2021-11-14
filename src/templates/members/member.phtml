@@ -9,6 +9,9 @@
         </div>
     </div>
     <div class="info">
+        {if $member->canDelete()}
+        <a href="{$member->url()}&do=delete" class="button error">Usuń</a>
+        {/if}
         {if $member->canEdit()}
             <a href="{$member->url()}&do=edit" class="button">Edytuj</a>
         {/if}

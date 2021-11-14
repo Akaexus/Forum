@@ -383,6 +383,10 @@ ol.topics > li > .topic_info .details {
     border-radius: .2em;
 }
 
+.button.error {
+    background: #de3636;
+}
+
 .button.grey {
     background: #8a8a8a;
 }

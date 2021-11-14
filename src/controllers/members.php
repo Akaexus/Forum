@@ -37,6 +37,15 @@ class Members extends Controller {
         }
     }
 
+    public function delete() {
+        if ($this->member->canDelete()) {
+            $this->member->delete();
+            Output::i()->redirect('?');
+        } else {
+            Output::i()->redirect($this->member->url());
+        }
+    }
+
     public function edit() {
         if ($this->member->canEdit()) {
             $form = User::form($this->member);

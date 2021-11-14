@@ -32,6 +32,10 @@ class User extends ActiveRecord
         return $this->is_admin;
     }
 
+    public function canDelete() {
+        return User::loggedIn()->isAdmin() && $this->member_id != User::loggedIn()->member_id;
+    }
+
     public static function loggedIn()
     {
         if (array_key_exists('user', $_SESSION)) {
