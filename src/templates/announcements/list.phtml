@@ -1,0 +1,50 @@
+<div class="infobox">
+    <h2 style="margin-top: 0;">Ogłoszenia</h2>
+    {if User::loggedIn()->isAdmin()}
+        <div class="admin_controls">
+            <a href="?controller=announcements&do=add" class="button">Dodaj ogłoszenie</a>
+        </div>
+    {/if}
+</div>
+<div class="posts">
+    {foreach $announcements as $ann}
+    <h3 class="topic_title">
+        {$ann->title}
+    </h3>
+    <article class="post">
+        <aside class="author_bar">
+            <h4>
+                {$ann->author()->link()|noescape}
+            </h4>
+            {$ann->author()->avatar('large')|noescape}
+            <span class="reputation">
+                <i class="fas fa-plus-circle"></i> {$ann->author()->reputation()}
+            </span>
+            <span>
+                {$ann->author()->group()|noescape}
+            </span>
+
+        </aside>
+        <div class="post_content">
+            <div class="meta desc small">
+                <div class="date">Napisano {$ann->created}</div>
+                {if User::loggedIn()->isAdmin()}
+                <div class="admin_controls">
+                    <div class="admin_edit">
+                        <a href="?controller=announcements&announcement_id={$ann->announcement_id|noescape}&do=edit">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="?controller=announcements&announcement_id={$ann->announcement_id|noescape}&do=delete">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </div>
+                </div>
+                {/if}
+            </div>
+            <div class="content">
+                {$ann->content|noescape}
+            </div>
+        </div>
+    </article>
+    {/foreach}
+</div>

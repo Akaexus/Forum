@@ -8,6 +8,9 @@ abstract class Controller
         'board'=> [
             'loggedIn'=> true,
         ],
+        'announcements'=> [
+            'loggedIn'=> true,
+        ],
         'register'=> [
             'loggedIn'=> false,
         ],
