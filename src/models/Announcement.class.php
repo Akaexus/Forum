@@ -45,7 +45,7 @@ class Announcement extends ActiveRecord
                 });
         }
 
-        $form->addSubmit('send', 'Edytuj');
+        $form->addSubmit('send', $entity ? 'Edytuj' : 'Dodaj');
         return $form;
     }
 

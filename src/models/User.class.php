@@ -258,4 +258,10 @@ class User extends ActiveRecord
             ['follower_id=?', $this->member_id]
         ], $count);
     }
+
+    public function trophies($count = false) {
+        return Trophy::loadAll([
+            ['given_id=?', $this->member_id]
+        ], $count);
+    }
 }

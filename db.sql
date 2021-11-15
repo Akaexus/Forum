@@ -16,6 +16,35 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `announcements`
+--
+
+DROP TABLE IF EXISTS `announcements`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `announcements` (
+  `announcement_id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created` timestamp NOT NULL DEFAULT current_timestamp(),
+  `content` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `author_id` bigint(20) NOT NULL,
+  PRIMARY KEY (`announcement_id`),
+  KEY `author_id` (`author_id`),
+  CONSTRAINT `announcements_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `members` (`member_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `announcements`
+--
+
+LOCK TABLES `announcements` WRITE;
+/*!40000 ALTER TABLE `announcements` DISABLE KEYS */;
+INSERT INTO `announcements` VALUES (1,'Testowe ogłoszenie','2023-11-14 13:34:00','test hehh',1);
+/*!40000 ALTER TABLE `announcements` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `followers`
 --
 
@@ -192,6 +221,37 @@ INSERT INTO `topics` VALUES (1,'Bardzo długa nazwa tematu, która jest za dług
 UNLOCK TABLES;
 
 --
+-- Table structure for table `trophies`
+--
+
+DROP TABLE IF EXISTS `trophies`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `trophies` (
+  `trophy_id` int(11) NOT NULL AUTO_INCREMENT,
+  `give_date` timestamp NOT NULL DEFAULT current_timestamp(),
+  `giver_id` bigint(20) NOT NULL,
+  `given_id` bigint(20) NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`trophy_id`),
+  KEY `giver_id` (`giver_id`),
+  KEY `given_id` (`given_id`),
+  CONSTRAINT `trophies_ibfk_1` FOREIGN KEY (`giver_id`) REFERENCES `members` (`member_id`) ON DELETE CASCADE,
+  CONSTRAINT `trophies_ibfk_2` FOREIGN KEY (`given_id`) REFERENCES `members` (`member_id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `trophies`
+--
+
+LOCK TABLES `trophies` WRITE;
+/*!40000 ALTER TABLE `trophies` DISABLE KEYS */;
+INSERT INTO `trophies` VALUES (2,'2021-11-15 16:16:00',1,2,'Testowe trofeum test'),(3,'2021-11-15 17:03:15',1,2,'test');
+/*!40000 ALTER TABLE `trophies` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Dumping routines for database 'forum'
 --
 /*!50003 DROP FUNCTION IF EXISTS `getLastForumPost` */;
@@ -251,4 +311,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-14 11:27:03
+-- Dump completed on 2021-11-15 18:03:38

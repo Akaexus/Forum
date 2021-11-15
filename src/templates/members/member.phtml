@@ -85,5 +85,57 @@
                 </div>
             </div>
         {/if}
+        {if !empty($member->about)}
+        <div class="box">
+            <h2>
+                {if User::loggedIn()->isAdmin()}
+                    <a href="?controller=trophies&member_id={$member->member_id}&do=add">
+                        <i class="fas fa-plus"></i>
+                    </a>
+                {/if}
+                Zdobyte trofea
+            </h2>
+            <div class="box_content">
+                {if $member->trophies(true) > 0}
+                    <ol class="trophies">
+                        {foreach $member->trophies() as $trophy}
+                            <li>
+                                <div class="icon">
+                                    <i class="fas fa-trophy"></i>
+                                </div>
+                                <div class="description">
+                                    <strong>
+                                        {$trophy->description|noescape}
+                                    </strong>
+                                </div>
+                                <div class="giver">
+                                    {$trophy->giver()->avatar('mini')|noescape}
+                                    {$trophy->giver()->link()|noescape}
+                                </div>
+                                <div class="date">
+                                    {date("F j, Y",strtotime($trophy->give_date))}
+                                </div>
+                                {if User::loggedIn()}
+                                <div class="admin_controls">
+                                    <a href="?controller=trophies&trophy_id={$trophy->trophy_id}&do=edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="?controller=trophies&trophy_id={$trophy->trophy_id}&do=delete">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </div>
+                                {/if}
+
+                            </li>
+                        {/foreach}
+                    </ol>
+                {else}
+                    <div class="desc">
+                        Brak trofeów
+                    </div>
+                {/if}
+            </div>
+        </div>
+        {/if}
     </article>
 </div>
