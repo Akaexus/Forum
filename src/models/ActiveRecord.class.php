@@ -95,12 +95,19 @@ abstract class ActiveRecord
         $this->save();
     }
 
-    public static function loadAll($where = null, $count = false)
+    public static function loadAll($where = null, $count = false, $order = null, $limit = null)
     {
         $query = [
             'select'=> $count ? 'count(*) as c' : '*',
             'from'=> static::$databaseTable
         ];
+
+        if ($order) {
+            $query['order'] = $order;
+        }
+        if ($limit) {
+            $query['limit'] = $limit;
+        }
         if ($where) {
             $query['where'] = $where;
         }

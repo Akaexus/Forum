@@ -1,0 +1,73 @@
+<div class="box">
+    <h2>
+        <a href="?controller=statuses&do=add">
+            <i class="fas fa-plus" aria-hidden="true"></i>
+        </a>
+        <a href="?controller=statuses">
+            Statusy
+        </a>
+    </h2>
+    <div class="box_content">
+        {if count($statuses)}
+        <ol class="statuses">
+            {foreach $statuses as $status}
+            <li>
+                <div class="status_box">
+                    <div class="photo">
+                        {$status->author()->avatar('mini')|noescape}
+                    </div>
+                    <div class="status">
+                        <div class="author">
+                            {$status->author()->link()|noescape}
+                        </div>
+                        <div class="date desc">{date('Y-m-d', strtotime($status->created))}</div>
+                        <div class="status_content">
+                            {$status->content}
+                        </div>
+                    </div>
+                    <div class="admin_control">
+                        <a href="{$status->url()}&do=edit">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="{$status->url()}&do=delete">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </div>
+                </div>
+                <ol class="status_comments">
+                    {foreach $status->comments() as $comment}
+                       <li>
+                           <div class="photo">
+                               {$comment->author()->avatar('tiny')|noescape}
+                           </div>
+                           <div class="comment">
+                               <div class="author">
+                                   {$comment->author()->link()|noescape} &middot;
+                                   <span class="date desc">{date('Y-m-d', strtotime($comment->created))}</span>
+                               </div>
+                               <div class="comment_content">
+                                   {$comment->content}
+                               </div>
+                           </div>
+                           <div class="admin_control">
+                               <a href="{$comment->url()}&do=edit">
+                                   <i class="fas fa-edit"></i>
+                               </a>
+                               <a href="{$comment->url()}&do=delete">
+                                   <i class="fas fa-trash"></i>
+                               </a>
+                           </div>
+                       </li>
+                    {/foreach}
+                    <li>
+                        {$status->commentForm()|noescape}
+                    </li>
+                </ol>
+            </li>
+            {/foreach}
+        </ol>
+        {else}
+        <div class="desc" style="text-align: center; padding: .5em 0;">Brak statusów</div>
+        {/if}
+    </div>
+</div>

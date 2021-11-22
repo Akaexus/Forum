@@ -11,6 +11,9 @@ abstract class Controller
         'trophies'=> [
             'loggedIn'=> true,
         ],
+        'statuses'=> [
+            'loggedIn'=> true,
+        ],
         'announcements'=> [
             'loggedIn'=> true,
         ],
