@@ -25,14 +25,16 @@
                             {$status->content}
                         </div>
                     </div>
-                    <div class="admin_control">
-                        <a href="{$status->url()}&do=edit">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <a href="{$status->url()}&do=delete">
-                            <i class="fas fa-trash"></i>
-                        </a>
-                    </div>
+                    {if $status->canEdit()}
+                        <div class="admin_control">
+                            <a href="{$status->url()}&do=edit">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="{$status->url()}&do=delete">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </div>
+                    {/if}
                 </div>
                 <ol class="status_comments">
                     {foreach $status->comments() as $comment}
@@ -49,14 +51,16 @@
                                    {$comment->content}
                                </div>
                            </div>
-                           <div class="admin_control">
-                               <a href="{$comment->url()}&do=edit">
-                                   <i class="fas fa-edit"></i>
-                               </a>
-                               <a href="{$comment->url()}&do=delete">
-                                   <i class="fas fa-trash"></i>
-                               </a>
-                           </div>
+                           {if $comment->canEdit()}
+                               <div class="admin_control">
+                                   <a href="{$comment->url()}&do=edit">
+                                       <i class="fas fa-edit"></i>
+                                   </a>
+                                   <a href="{$comment->url()}&do=delete">
+                                       <i class="fas fa-trash"></i>
+                                   </a>
+                               </div>
+                           {/if}
                        </li>
                     {/foreach}
                     <li>

@@ -63,6 +63,6 @@ class StatusComment extends ActiveRecord
     }
 
     public function canEdit() {
-        return User::loggedIn()->isAdmin() || User::loggedIn()->member_id == $this->comment->author_id;
+        return User::loggedIn()->isAdmin() || User::loggedIn()->member_id == $this->author_id;
     }
 }

@@ -65,6 +65,6 @@ class Status extends ActiveRecord
     }
 
     public function canEdit() {
-        return User::loggedIn()->isAdmin() || User::loggedIn()->member_id == $this->status->author_id;
+        return User::loggedIn()->isAdmin() || User::loggedIn()->member_id == $this->author_id;
     }
 }
