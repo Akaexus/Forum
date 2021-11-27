@@ -30,6 +30,7 @@ CREATE TABLE `announcements` (
   `author_id` bigint(20) NOT NULL,
   PRIMARY KEY (`announcement_id`),
   KEY `author_id` (`author_id`),
+  KEY `title` (`title`),
   FULLTEXT KEY `content` (`content`),
   CONSTRAINT `announcements_ibfk_1` FOREIGN KEY (`author_id`) REFERENCES `members` (`member_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -61,7 +62,7 @@ CREATE TABLE `followers` (
   KEY `followers_ibfk_2` (`followed_id`),
   CONSTRAINT `followers_ibfk_1` FOREIGN KEY (`follower_id`) REFERENCES `members` (`member_id`) ON DELETE CASCADE,
   CONSTRAINT `followers_ibfk_2` FOREIGN KEY (`followed_id`) REFERENCES `members` (`member_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -70,7 +71,7 @@ CREATE TABLE `followers` (
 
 LOCK TABLES `followers` WRITE;
 /*!40000 ALTER TABLE `followers` DISABLE KEYS */;
-INSERT INTO `followers` VALUES (6,2,3),(9,2,1),(11,3,1);
+INSERT INTO `followers` VALUES (6,2,3),(9,2,1),(11,3,1),(12,19,1);
 /*!40000 ALTER TABLE `followers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -86,6 +87,7 @@ CREATE TABLE `forums` (
   `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `description` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`forum_id`),
+  KEY `name` (`name`),
   FULLTEXT KEY `description` (`description`)
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -118,8 +120,9 @@ CREATE TABLE `members` (
   PRIMARY KEY (`member_id`),
   UNIQUE KEY `name` (`name`),
   UNIQUE KEY `email` (`email`),
+  KEY `idx_joined` (`joined`),
   FULLTEXT KEY `about` (`about`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=50 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -128,7 +131,7 @@ CREATE TABLE `members` (
 
 LOCK TABLES `members` WRITE;
 /*!40000 ALTER TABLE `members` DISABLE KEYS */;
-INSERT INTO `members` VALUES (1,'Damazy Pióropusz','admin@admin.pl','2020-11-02 20:27:00','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',1,'Kapucyn[1] (zwany przez miejscową ludność Ostrym Kamieniem[2]) – ostaniec wierzchowinowy wchodzący w skład grupy skał zwanych Ostańcami Jerzmanowickimi. Znajduje się w najwyższych partiach Wyżyny Olkuskiej, w miejscowości Jerzmanowice, w odległości ok. 800 m na południowy zachód od drogi krajowej nr 94[3]. Jest jednym z ostańców w grupie skał ciągnących się od Grodziska, zwanego też Wzgórzem 502 lub Skałą 502, w północnym kierunku. W grupie tej kolejno znajdują się: Grodzisko, Mały Mur, Kapucyn, Słup (Palec), Soczewka, Ostry Kamień i Polna Skałka[1]. '),(2,'user1','admin2@admin.pl','2021-11-02 21:44:00','$2y$10$/3WDPhvZXEs2pQlxijiXouPcoN9xy9p3QMvvs.2sjh1awM8M1Vi/K',0,'<strong>poland strong</strong> tak'),(3,'admin3','admin3@admin.pl','2021-11-02 21:45:00','$2y$10$/Hrmgo4GomLR5MIAh0JTce3rLPRcpcrNg5aeNyVB3hi/csYr1auk.',0,'piejo kury piejo nie mają koguta');
+INSERT INTO `members` VALUES (1,'Damazy Pióropusz','admin@admin.pl','2020-11-02 20:27:00','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',1,'Kapucyn[1] (zwany przez miejscową ludność Ostrym Kamieniem[2]) – ostaniec wierzchowinowy wchodzący w skład grupy skał zwanych Ostańcami Jerzmanowickimi. Znajduje się w najwyższych partiach Wyżyny Olkuskiej, w miejscowości Jerzmanowice, w odległości ok. 800 m na południowy zachód od drogi krajowej nr 94[3]. Jest jednym z ostańców w grupie skał ciągnących się od Grodziska, zwanego też Wzgórzem 502 lub Skałą 502, w północnym kierunku. W grupie tej kolejno znajdują się: Grodzisko, Mały Mur, Kapucyn, Słup (Palec), Soczewka, Ostry Kamień i Polna Skałka[1]. '),(2,'user1','admin2@admin.pl','2021-11-02 21:44:00','$2y$10$/3WDPhvZXEs2pQlxijiXouPcoN9xy9p3QMvvs.2sjh1awM8M1Vi/K',0,'<strong>poland strong</strong> tak'),(3,'admin3','admin3@admin.pl','2021-11-02 21:45:00','$2y$10$/Hrmgo4GomLR5MIAh0JTce3rLPRcpcrNg5aeNyVB3hi/csYr1auk.',0,'piejo kury piejo nie mają koguta'),(5,'irekk','irekk@example.com','2011-11-15 23:38:46','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(6,'BRC','brc@example.com','2011-04-06 21:47:37','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(7,'MaTeK_','matek_@example.com','2010-05-14 01:08:21','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(8,'Jane','jane@example.com','2011-09-15 23:25:30','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(9,'ann13','ann13@example.com','2011-02-11 04:49:02','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(11,'Matteo','matteo@example.com','2023-09-09 10:58:17','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(12,'Przemo','przemo@example.com','2022-03-26 07:12:53','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(17,'NineX','ninex@example.com','2022-05-19 07:10:15','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(18,'Widmo','widmo@example.com','2023-10-24 12:57:26','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(19,'arcy','arcy@example.com','2022-01-08 05:48:55','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(23,'ANDREAN','andrean@example.com','2023-03-06 07:11:21','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(24,'raf_b','raf_b@example.com','2023-04-04 20:30:19','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(25,'lamerczak','lamerczak@example.com','2022-11-07 19:29:49','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(26,'pBartnik','pbartnik@example.com','2022-07-31 22:30:26','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(27,'adam1024','adam1024@example.com','2022-06-11 16:35:04','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(28,'Anna01','anna01@example.com','2022-07-27 01:56:20','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(29,'Joy106','joy106@example.com','2023-08-08 18:28:45','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(30,'Budyn00','budyn00@example.com','2022-05-28 01:07:12','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(31,'karzniczka','karzniczka@example.com','2023-04-21 08:41:33','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(32,'Woytec','woytec@example.com','2023-05-26 02:38:17','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(33,'Liliput','liliput@example.com','2023-03-05 21:38:57','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(34,'Redoo','redoo@example.com','2023-10-11 14:52:03','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(35,'luk19952','luk19952@example.com','2023-06-15 19:55:37','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(36,'Panda6','panda6@example.com','2022-01-13 17:34:05','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(37,'wiewir','wiewir@example.com','2021-11-27 14:35:50','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(38,'Robeo','robeo@example.com','2023-07-09 06:48:41','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(39,'markooff','markooff@example.com','2021-12-21 00:48:01','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(40,'xrayPL','xraypl@example.com','2023-05-22 18:06:04','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(41,'PowerGamer','powergamer@example.com','2023-02-16 02:38:22','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(42,'VST','vst@example.com','2023-07-24 17:25:41','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(46,'VANDAL','vandal@example.com','2023-01-03 15:38:46','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(47,'up7down','up7down@example.com','2023-05-13 15:23:48','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(48,'danielbyk','danielbyk@example.com','2023-11-21 16:34:09','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL),(49,'imzdx','imzdx@example.com','2023-06-14 23:10:46','$2y$10$Zz6LxK.IVqURw8kAuVHTX.xTRcyBWWR3v0ph8qQ8dAUKGdoFlWL8q',0,NULL);
 /*!40000 ALTER TABLE `members` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -148,6 +151,7 @@ CREATE TABLE `posts` (
   PRIMARY KEY (`post_id`),
   KEY `posts_ibfk_1` (`topic_id`),
   KEY `posts_ibfk_2` (`author_id`),
+  KEY `idx_created` (`created`),
   FULLTEXT KEY `content` (`content`),
   CONSTRAINT `posts_ibfk_1` FOREIGN KEY (`topic_id`) REFERENCES `topics` (`topic_id`) ON DELETE CASCADE,
   CONSTRAINT `posts_ibfk_2` FOREIGN KEY (`author_id`) REFERENCES `members` (`member_id`) ON DELETE CASCADE
@@ -270,6 +274,8 @@ CREATE TABLE `topics` (
   PRIMARY KEY (`topic_id`),
   KEY `topics_ibfk_1` (`forum_id`),
   KEY `topics_ibfk_2` (`author_id`),
+  KEY `title` (`title`),
+  KEY `idx_created` (`created`),
   CONSTRAINT `topics_ibfk_1` FOREIGN KEY (`forum_id`) REFERENCES `forums` (`forum_id`) ON DELETE CASCADE,
   CONSTRAINT `topics_ibfk_2` FOREIGN KEY (`author_id`) REFERENCES `members` (`member_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -377,4 +383,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-27 13:31:14
+-- Dump completed on 2021-11-27 15:11:57
