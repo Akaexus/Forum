@@ -26,6 +26,19 @@ class DB extends Singleton
         return $this->c->query($q);
     }
 
+    function queryParams($query, $params) {
+        $stmt = $this->c->prepare($query);
+        $stmt->execute($params);
+        if ($stmt->rowCount()) {
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $stmt = null;
+            return $rows;
+        } else {
+            $stmt = null;
+            return [];
+        }
+    }
+
 
     public function delete($data)
     {

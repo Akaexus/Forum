@@ -1,0 +1,325 @@
+<h2>
+    Wyniki wyszukiwania frazy "{$needle}"
+</h2>
+<div class="search_container">
+    <div class="categories">
+        <ol>
+            {foreach $categories as $categoryName => $category}
+                <li>
+                    {if $activeCategory == $categoryName}
+                        <a href="?controller=search&category={$categoryName}&search={$needle}" class="active">
+                    {else}
+                        <a href="?controller=search&category={$categoryName}&search={$needle}">
+                    {/if}
+                        {$category['lang']}
+                    </a>
+                </li>
+            {/foreach}
+        </ol>
+    </div>
+    <div class="results">
+        {if count($entities)}
+            {if $entities[0] instanceof Announcement}
+                <div class="posts">
+                    {foreach $entities as $ann}
+                    <h3 class="topic_title">
+                        <a href="{$ann->url()}">{$ann->title}</a>
+                    </h3>
+                    <article class="post">
+                        <aside class="author_bar">
+                            <h4>
+                                {$ann->author()->link()|noescape}
+                            </h4>
+                            {$ann->author()->avatar('medium')|noescape}
+                            <span class="reputation">
+                        <i class="fas fa-plus-circle"></i> {$ann->author()->reputation()}
+                    </span>
+                            <span>
+                        {$ann->author()->group()|noescape}
+                    </span>
+
+                        </aside>
+                        <div class="post_content">
+                            <div class="meta desc small">
+                                <div class="date">Napisano {$ann->created}</div>
+                            </div>
+                            <div class="content">
+                                {Output::truncate($ann->content, 50)|noescape}
+                            </div>
+                        </div>
+                    </article>
+                    {/foreach}
+                </div>
+                {elseif $entities[0] instanceof Forum}
+                    <div class="forums_container">
+                        <ol class="forums">
+                            {foreach $entities as $forum}
+                            <li>
+                                <div class="icon">
+                                    <i class="fas fa-comments"></i>
+                                </div>
+                                <div class="forum_info">
+                                    <h4>
+                                        <a href="?controller=forums&forum_id={$forum->forum_id|noescape}">
+                                            {$forum->name|noescape}
+                                        </a>
+                                    </h4>
+                                    <p>{$forum->description|noescape}</p>
+                                </div>
+                                <div class="topics_count">
+                                    <div class="number">{$forum->countTopics()}</div> tematów
+                                </div>
+                                <div class="last_poster">
+                                    {if $forum->lastPost()}
+                                    <div class="avatar">
+                                        {$forum->lastPost()->author()->avatar('tiny')|noescape}
+                                    </div>
+                                    <div>
+                                        {$forum->lastPost()->topic()->link($forum->lastPost()->post_id)|noescape}<br>
+                                        przez {$forum->lastPost()->author()->link()|noescape}
+                                    </div>
+                                    {else}
+                                    <span class="desc">brak postów</span>
+                                    {/if}
+                                </div>
+                            </li>
+                            {/foreach}
+                        </ol>
+                    </div>
+            {elseif $entities[0] instanceof Topic}
+                <ol class="topics">
+                    {foreach $entities as $topic}
+                    <li>
+                        <div class="topic_info">
+                            <h4>
+                                <a href="{$topic->url()}">
+                                    {$topic->title}
+                                </a>
+                            </h4>
+                            <div class="details">przez {$topic->author()->link()|noescape} &middot; napisano {$topic->created}</div>
+                        </div>
+                        <div class="posts_count">
+                            <div class="number">{$topic->countPosts()}</div> odpowiedzi
+                        </div>
+                        <div class="last_poster">
+                            {if $topic->lastPost()}
+                            <div class="avatar">
+                                {$topic->lastPost()->author()->avatar('tiny')|noescape}
+                            </div>
+                            <div>
+                                {$topic->link($topic->lastPost()->post_id)|noescape}<br>
+                                przez {$topic->lastPost()->author()->link()|noescape}
+                            </div>
+                            {else}
+                            <span class="desc">brak postów</span>
+                            {/if}
+                        </div>
+                    </li>
+                    {/foreach}
+                </ol>
+            {elseif $entities[0] instanceof Post}
+                <div class="posts">
+                    {foreach $entities as $post}
+                    <h2>{$post->topic()->link()|noescape}</h2>
+                    <article class="post" id="post-{$post->post_id}">
+                        <aside class="author_bar">
+                            <h4>
+                                {$post->author()->link()|noescape}
+                            </h4>
+                            {$post->author()->avatar('large')|noescape}
+                            <span class="reputation">
+                        <i class="fas fa-plus-circle"></i> {$post->author()->reputation()}
+                    </span>
+                            <span>
+                        {$post->author()->group()|noescape}
+                    </span>
+
+                        </aside>
+                        <div class="post_content">
+                            <div class="meta desc small">
+                                <div class="date">Napisano {$post->created}</div>
+                            </div>
+                            <div class="content">
+                                {Output::truncate($post->content, 50)|noescape}
+                            </div>
+                            <div class="reactions">
+                                {if $post->canReact()}
+                                <a href="{$post->reactUrl()}" class="reaction {if $post->reacted()}reacted{/if}">
+                                    <i class="fas fa-thumbs-up"></i>
+                                    <span>
+                                {if $post->reacted()}
+                                    Lubisz to!
+                                {else}
+                                    Lubię to!
+                                {/if}
+                                </span>
+                                </a>
+                                {/if}
+                                <div class="reputation">
+                                    <i class="fas fa-plus-circle"></i> {$post->reputation()}
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    {/foreach}
+                </div>
+            {elseif $entities[0] instanceof User}
+                <ol class="members">
+                    {foreach $entities as $member}
+                    <li>
+                        <div class="avatar">
+                            {$member->avatar('small')|noescape}
+                        </div>
+                        <div class="name">
+                            {$member->link()|noescape}<br>
+                            <div class="reputation">
+                                <i class="fas fa-plus-circle"></i> {$member->reputation()}
+                            </div>
+                        </div>
+                        <div class="follow">
+                            {if $member->canFollow()}
+                            {if $member->isFollowed()}
+                            <a href="{$member->url()}&do=follow" class="button grey">Przestań obserwować</a>
+                            {else}
+                            <a href="{$member->url()}&do=follow" class="button">Obserwuj</a>
+                            {/if}
+                            {/if}
+                        </div>
+                    </li>
+                    {/foreach}
+                </ol>
+            {elseif $entities[0] instanceof Reaction}
+                <table class="forum_table">
+                    <thead>
+                        <tr>
+                            <th>Post w temacie</th>
+                            <th>Autor</th>
+                            <th>Polubione przez</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {foreach $entities as $reaction}
+                        <tr>
+                            <td>{$reaction->post()->link()|noescape}</td>
+                            <td>
+                                <div class="center-vert">
+                                    {$reaction->post()->author()->avatar('tiny')|noescape}
+                                    {$reaction->post()->author()->link()|noescape}
+                                </div>
+                            </td>
+                            <td>
+                                <div class="center-vert">
+                                    {$reaction->member()->avatar('tiny')|noescape}
+                                    {$reaction->member()->link()|noescape}
+                                </div>
+                            </td>
+                        </tr>
+                        {/foreach}
+                    </tbody>
+                </table>
+            {elseif $entities[0] instanceof Status}
+                <ol class="statuses">
+                    {foreach $entities as $status}
+                    <li>
+                        <div class="status_box">
+                            <div class="photo">
+                                {$status->author()->avatar('mini')|noescape}
+                            </div>
+                            <div class="status">
+                                <div class="author">
+                                    {$status->author()->link()|noescape}
+                                </div>
+                                <div class="date desc">{date('Y-m-d', strtotime($status->created))}</div>
+                                <div class="status_content">
+                                    {$status->content}
+                                </div>
+                            </div>
+                        </div>
+                        <ol class="status_comments">
+                            {foreach $status->comments() as $comment}
+                            <li>
+                                <div class="photo">
+                                    {$comment->author()->avatar('tiny')|noescape}
+                                </div>
+                                <div class="comment">
+                                    <div class="author">
+                                        {$comment->author()->link()|noescape} &middot;
+                                        <span class="date desc">{date('Y-m-d', strtotime($comment->created))}</span>
+                                    </div>
+                                    <div class="comment_content">
+                                        {$comment->content}
+                                    </div>
+                                </div>
+                            </li>
+                            {/foreach}
+                        </ol>
+                    </li>
+                    {/foreach}
+                </ol>
+            {elseif $entities[0] instanceof StatusComment}
+                <ol class="statuses">
+                    {foreach array_map(function($e){return $e->status();}, $entities) as $status}
+                    <li>
+                        <div class="status_box">
+                            <div class="photo">
+                                {$status->author()->avatar('mini')|noescape}
+                            </div>
+                            <div class="status">
+                                <div class="author">
+                                    {$status->author()->link()|noescape}
+                                </div>
+                                <div class="date desc">{date('Y-m-d', strtotime($status->created))}</div>
+                                <div class="status_content">
+                                    {$status->content}
+                                </div>
+                            </div>
+                        </div>
+                        <ol class="status_comments">
+                            {foreach $status->comments() as $comment}
+                            <li>
+                                <div class="photo">
+                                    {$comment->author()->avatar('tiny')|noescape}
+                                </div>
+                                <div class="comment">
+                                    <div class="author">
+                                        {$comment->author()->link()|noescape} &middot;
+                                        <span class="date desc">{date('Y-m-d', strtotime($comment->created))}</span>
+                                    </div>
+                                    <div class="comment_content">
+                                        {$comment->content}
+                                    </div>
+                                </div>
+                            </li>
+                            {/foreach}
+                        </ol>
+                    </li>
+                    {/foreach}
+                </ol>
+            {elseif $entities[0] instanceof Trophy}
+                <ol class="trophies">
+                    {foreach $entities as $trophy}
+                    <li>
+                        <div class="icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="description">
+                            <strong>
+                                {$trophy->description|noescape}
+                            </strong>
+                        </div>
+                        <div class="giver">
+                            {$trophy->given()->avatar('mini')|noescape}
+                            {$trophy->given()->link()|noescape}
+                        </div>
+                        <div class="date">
+                            {date("F j, Y",strtotime($trophy->give_date))}
+                        </div>
+                    </li>
+                    {/foreach}
+                </ol>
+            {/if}
+        {else}
+        <h2>Nic nie znaleziono</h2>
+        {/if}
+    </div>
+</div>

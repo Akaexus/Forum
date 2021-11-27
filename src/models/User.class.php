@@ -204,7 +204,7 @@ class User extends ActiveRecord
     }
 
     public function avatar($size = 'small') {
-        return "<a href=\"{$this->url()}\"><img class=\"photo {$size}\" src=\"{$this->avatarUrl()}\" alt=\"\"></a>";
+        return "<a class=\"av\" href=\"{$this->url()}\"><img class=\"photo {$size}\" src=\"{$this->avatarUrl()}\" alt=\"\"></a>";
     }
 
     public function group() {

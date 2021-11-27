@@ -16,7 +16,8 @@ class Template
         $this->controller = $controller;
     }
 
-    public function renderTemplate($template, $params = []) {
-        return $this->templatingEngine->renderToString(ROOT_PATH."templates/{$this->controller}/{$template}.phtml", $params);
+    public function renderTemplate($template, $params = [], $controller = null) {
+        $controller = $controller ?? $this->controller;
+        return $this->templatingEngine->renderToString(ROOT_PATH."templates/{$controller}/{$template}.phtml", $params);
     }
 }

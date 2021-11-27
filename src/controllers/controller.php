@@ -40,7 +40,10 @@ abstract class Controller
         ],
         'follows' => [
             'loggedIn'=> true,
-        ]
+        ],
+        'search' => [
+            'loggedIn'=> true,
+        ],
     ];
 
     public static function _checkAvailableController($controller) {

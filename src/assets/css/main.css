@@ -441,7 +441,7 @@ ol.topics > li > .topic_info .details {
 }
 
 .member_header > .info > * {
-    margin-right: 2em;
+    margin-right: 1.2em;
 }
 
 
@@ -679,4 +679,122 @@ li .admin_control, li .admin_edit, article .admin_edit {
 li:hover .admin_control, li:hover .admin_edit, article:hover .admin_edit {
     transition: opacity 0.2s;
     opacity: 1;
+}
+
+.search_bar {
+    display: flex;
+    align-items: stretch;
+}
+
+.search_bar table {
+    border-collapse: collapse;
+}
+
+.search_bar form input {
+    border-radius: 3px 0 0 3px;
+    border: none;
+    padding: .3em;
+}
+
+.search_bar form *:not(input) {
+    margin: 0;
+    padding: 0;
+}
+
+.search_bar > label:hover {
+    cursor: pointer;
+}
+
+.search_bar > label {
+    width: 100%;
+    padding: 0 .5em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 3px 3px 0;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.errorbox * {
+    display: block;
+}
+
+.errorbox {
+    text-align: center;
+}
+
+.search_container {
+    display: flex;
+}
+
+.search_container > .categories {
+    flex: 0 0 20%;
+}
+
+.search_container > .results {
+    flex: 0 0 80%;
+}
+
+.forum_table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.forum_table th {
+    background: #f8f8f8;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+
+.forum_table tr:not(:last-of-type) {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.forum_table td, .forum_table th {
+    padding: .8em;
+}
+
+.av {
+    margin-right: .5em;
+}
+
+.center-vert {
+    display: flex;
+    align-items: center;
+}
+
+.categories ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.results {
+    padding-left: 2em;
+}
+
+.categories ol > li:not(:last-of-type) {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.categories ol > li:hover > a:not(.active) {
+    background: #858585;
+    color: #fff;
+    transition: all 0.1s;
+}
+
+.categories ol > li > a.active {
+    background: #323232;
+    color: #fff;
+}
+
+.categories ol > li:not(:last-of-type) > a.active {
+    border-bottom-color: #323232;
+}
+
+.categories ol > li > a {
+    padding: .5em 1em;
+    display: block;
+    transition: all 0.1s;
 }

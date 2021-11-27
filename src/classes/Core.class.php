@@ -14,7 +14,11 @@ class Core extends Singleton
     }
 
     public function dispatcher() {
-        $controllerName = Request::i()->controller;
+        if (isset(Request::i()->search)) {
+            $controllerName = 'search';
+        } else {
+            $controllerName = Request::i()->controller;
+        }
         $do = Request::i()->do ?? 'manage';
         $controller = new $controllerName();
         if ($do[0] == '_' || !method_exists($controller, $do)) {

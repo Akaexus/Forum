@@ -37,20 +37,16 @@ class Output extends Singleton
         $this->_output .= $string;
     }
 
-    public function error($errorCode = null, $message = null)
+    public function error($errorCode = null, $message = null, $description = null)
     {
+        $this->title = 'Błąd ' . $errorCode;
         $this->add(
-            $this->renderpage(
-                'core',
-                'error',
-                [
-                    'errorCode'=> $errorCode,
-                    'message'=> $message,
-                ]
-            )
+            Template::i()->renderTemplate('error', [
+                'errorCode'=> $errorCode,
+                'message'=> $message,
+                'description'=> $description
+            ], 'core')
         );
-        echo $this->render();
-        die();
     }
 
     public function render($toString = false)
@@ -74,5 +70,9 @@ class Output extends Singleton
             echo $output;
         }
         return true;
+    }
+
+    public static function truncate($text, $words = 25) {
+        return implode(' ', array_slice(explode(' ', $text), 0, $words)) . '...';
     }
 }

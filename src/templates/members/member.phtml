@@ -23,7 +23,7 @@
             {/if}
         {/if}
         <div class="stat">
-            <div class="description">Liczba postów</div>
+            <div class="description">Posty</div>
             <div class="value">{$member->postCount()}</div>
         </div>
         <div class="stat">
@@ -34,6 +34,12 @@
             <div class="description">Obserwujących</div>
             <div class="value">{$member->followers(true)}</div>
         </div>
+        {if User::loggedIn()->isAdmin()}
+            <div class="stat">
+                <div class="description">Email</div>
+                <div class="value">{$member->email}</div>
+            </div>
+        {/if}
     </div>
 </div>
 <div class="member_content">

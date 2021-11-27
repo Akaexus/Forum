@@ -75,6 +75,10 @@ class Post extends ActiveRecord
         return $this->topic()->url($this->post_id);
     }
 
+    public function link() {
+        return "<a href=\"{$this->url()}\">{$this->topic()->title}</a>";
+    }
+
     public function loadPostReactions() {
         if (is_null($this->reactions)) {
             $this->reactions = Reaction::loadAll([
