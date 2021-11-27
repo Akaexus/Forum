@@ -1,0 +1,37 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<OSDM_Design class="oracle.dbtools.crest.model.design.Design" name="erm" id="4E744848-EA19-6F94-BCEE-277865303F93" version="3.5">
+<createdBy>krzysztof</createdBy>
+<createdTime>2021-11-27 15:39:35 UTC</createdTime>
+<ownerDesignName>erm</ownerDesignName>
+<capitalNames>false</capitalNames>
+<designId>4E744848-EA19-6F94-BCEE-277865303F93</designId>
+<usedDesignStorageDescriptors>
+<designDescr class="oracle.dbtools.crest.model.design.Design$DesignStorageDesc" id="16B08907-8B5D-9FC6-1901-2D4910B330BE">
+<designStoragePath>/db</designStoragePath>
+</designDescr>
+<designDescr class="oracle.dbtools.crest.model.design.Design$DesignStorageDesc" id="604A00B3-B156-FC24-0CB7-7757FCC72CD9">
+<designStoragePath>/oracle</designStoragePath>
+</designDescr>
+<designDescr class="oracle.dbtools.crest.model.design.Design$DesignStorageDesc" id="9336409A-5CBA-4679-E99A-7CD1E89712B8">
+<designStoragePath>/forums</designStoragePath>
+</designDescr>
+<designDescr class="oracle.dbtools.crest.model.design.Design$DesignStorageDesc" id="5540FB29-CF96-C5D5-50A2-C81D5D78E172">
+<designStoragePath>/forums</designStoragePath>
+</designDescr>
+<designDescr class="oracle.dbtools.crest.model.design.Design$DesignStorageDesc" id="3F4940BD-5BA4-E6DE-880B-9C3D3F75382D">
+<designStoragePath>/forums</designStoragePath>
+</designDescr>
+<designDescr class="oracle.dbtools.crest.model.design.Design$DesignStorageDesc" id="1A23A412-94C9-BFD5-A39D-761D648DE074">
+<designStoragePath>/huj</designStoragePath>
+</designDescr>
+<designDescr class="oracle.dbtools.crest.model.design.Design$DesignStorageDesc" id="AF382491-1791-0C4C-8282-87E4B06789C9">
+<designStoragePath>/huj</designStoragePath>
+</designDescr>
+<designDescr class="oracle.dbtools.crest.model.design.Design$DesignStorageDesc" id="8D0AE9E7-1F24-E08B-8E8E-B73304FD4BF5">
+<designStoragePath>/oracle</designStoragePath>
+</designDescr>
+<designDescr class="oracle.dbtools.crest.model.design.Design$DesignStorageDesc" id="D3C80DB8-DEF3-AFB9-832A-89C6362ACDDC">
+<designStoragePath>/oracle</designStoragePath>
+</designDescr>
+</usedDesignStorageDescriptors>
+</OSDM_Design>
